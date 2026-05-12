@@ -1,11 +1,13 @@
 name: Deploy to hypnosis.drsergio.net
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
     paths:
       - 'hypnosis-app/**'
+      - '.github/workflows/deploy.yml'
 
 jobs:
   deploy:
