@@ -21,13 +21,13 @@ jobs:
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server:   ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASS }}
+          server:   ${{ secrets.FTP_SERVER || secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME || secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD || secrets.FTP_PASS }}
           port:     21
           protocol: ftps          # use ftps (explicit TLS) — change to ftp if unsupported
           local-dir:  ./hypnosis-app/
-          server-dir: ${{ secrets.FTP_REMOTE_DIR }}
+          server-dir: ${{ secrets.FTP_REMOTE_DIR || secrets.FTP_SERVER_DIR }}
           # Only upload files that changed since the last deploy.
           # On first run this uploads everything.
           state-name: .ftp-deploy-sync-state.json
