@@ -1,0 +1,98 @@
+:root {
+	--brand-blue: #7aa7d8;
+	--brand-green: #97c7b2;
+	--brand-lavender: #d8c7ea;
+	--brand-ink: #314154;
+	--brand-soft: #f6f9fc;
+}
+
+body {
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	background: linear-gradient(180deg, #f9fbff 0%, #f4f9f7 100%);
+	color: var(--brand-ink);
+}
+
+.text-primary {
+	color: var(--brand-blue) !important;
+}
+
+.btn-primary {
+	background-color: var(--brand-blue);
+	border-color: var(--brand-blue);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+	background-color: #6596c9;
+	border-color: #6596c9;
+}
+
+.hero {
+	background: radial-gradient(circle at top right, #e3f0ff, transparent 45%), radial-gradient(circle at bottom left, #e6f7ef, transparent 55%), #ffffff;
+	border-radius: 1.5rem;
+	padding: 3rem 2rem;
+	box-shadow: 0 12px 30px rgba(122, 167, 216, 0.15);
+}
+
+.section-card {
+	border: 0;
+	border-radius: 1rem;
+	box-shadow: 0 6px 18px rgba(49, 65, 84, 0.08);
+}
+
+.service-icon {
+	width: 48px;
+	height: 48px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	background: linear-gradient(135deg, #e4f1ff, #efe8f9);
+	color: var(--brand-blue);
+	font-size: 1.25rem;
+}
+
+.wellness-banner {
+	background: linear-gradient(120deg, #eaf4ff 0%, #eaf8f1 100%);
+	border: 1px solid #d8e8f8;
+	border-radius: 1rem;
+	padding: 1rem;
+}
+
+.dashboard-stat {
+	border-left: 4px solid var(--brand-blue);
+	border-radius: 1rem;
+	background: #fff;
+}
+
+.table thead th {
+	background-color: #eef5fc;
+}
+
+.faq-accordion .accordion-button:not(.collapsed) {
+	background-color: #eef5fc;
+	color: #3f5d82;
+}
+
+.rounded-soft {
+	border-radius: 1rem;
+}
+
+.page-title {
+	font-weight: 700;
+	color: #3c577a;
+}
+
+.warning-banner {
+	background: #fff4e5;
+	border: 1px solid #ffd7a8;
+	border-radius: 0.75rem;
+	padding: 0.85rem 1rem;
+}
+
+@media (max-width: 768px) {
+	.hero {
+		padding: 2rem 1.25rem;
+	}
+}
+
