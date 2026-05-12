@@ -1,0 +1,39 @@
+name: Deploy to hypnosis.drsergio.net
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'hypnosis-app/**'
+
+jobs:
+  deploy:
+    name: FTP Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2   # needed for changed-file detection
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server:   ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASS }}
+          port:     21
+          protocol: ftps          # use ftps (explicit TLS) — change to ftp if unsupported
+          local-dir:  ./hypnosis-app/
+          server-dir: ${{ secrets.FTP_REMOTE_DIR }}
+          # Only upload files that changed since the last deploy.
+          # On first run this uploads everything.
+          state-name: .ftp-deploy-sync-state.json
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            uploads/profile_photos/**
+            uploads/documents/**
