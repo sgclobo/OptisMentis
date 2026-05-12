@@ -18,19 +18,18 @@ declare(strict_types=1);
                 <li class="nav-item"><a class="nav-link" href="<?= APP_BASE_URL ?>/appointment.php"><?= e(t('nav.appointments')) ?></a></li>
                 <li class="nav-item"><a class="nav-link" href="<?= APP_BASE_URL ?>/contact.php"><?= e(t('nav.contact')) ?></a></li>
 
-                <li class="nav-item dropdown">
-                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <?= e(t('common.language')) ?>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
+                <li class="nav-item" aria-label="<?= e(t('common.language')) ?>">
+                    <div class="d-flex gap-1 align-items-center">
                         <?php foreach (available_locales() as $code => $meta): ?>
-                            <li>
-                                <a class="dropdown-item<?= current_locale() === $code ? ' active' : '' ?>" href="<?= e(language_switch_url($code)) ?>">
-                                    <?= e($meta['flag']) ?> - <?= e($meta['name']) ?>
-                                </a>
-                            </li>
+                            <a
+                                class="btn btn-sm <?= current_locale() === $code ? 'btn-primary' : 'btn-outline-secondary' ?>"
+                                href="<?= e(language_switch_url($code)) ?>"
+                                title="<?= e($meta['name']) ?>"
+                                aria-label="<?= e($meta['name']) ?>">
+                                <?= e($meta['flag']) ?>
+                            </a>
                         <?php endforeach; ?>
-                    </ul>
+                    </div>
                 </li>
 
                 <?php if (!is_logged_in()): ?>
