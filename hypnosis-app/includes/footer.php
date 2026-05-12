@@ -7,8 +7,8 @@ declare(strict_types=1);
     <div class="container">
         <p class="mb-2 small text-muted"><?= e(app_disclaimer()) ?></p>
         <div class="d-flex flex-wrap justify-content-between align-items-center small text-secondary">
-            <span>&copy; <?= date('Y') ?> <?= e(APP_NAME) ?>. All rights reserved.</span>
-            <span>Complementary care for relaxation, behavioral change, and emotional wellness.</span>
+            <span>&copy; <?= date('Y') ?> <?= e(APP_NAME) ?>. <?= e(t('footer.rights')) ?></span>
+            <span><?= e(t('footer.tagline')) ?></span>
         </div>
     </div>
 </footer>

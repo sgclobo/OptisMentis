@@ -6,13 +6,13 @@ require_once __DIR__ . '/config/db.php';
 $stmt = $pdo->query("SELECT * FROM services WHERE is_active = 1 ORDER BY id");
 $services = $stmt->fetchAll();
 
-$pageTitle = 'Our Services — ' . APP_NAME;
+$pageTitle = t('services.page_title') . ' - ' . APP_NAME;
 require_once __DIR__ . '/includes/header.php';
 ?>
 
 <div class="container">
-    <h1 class="page-title mt-4 mb-2">Our Therapy Support Areas</h1>
-    <p class="text-muted mb-4">All services are provided as complementary behavioral and relaxation support. Results may vary by individual.</p>
+    <h1 class="page-title mt-4 mb-2"><?= e(t('services.heading')) ?></h1>
+    <p class="text-muted mb-4"><?= e(t('services.intro')) ?></p>
     <div class="wellness-banner mb-4 text-muted small">
         <i class="bi bi-info-circle me-1"></i><?= e(app_disclaimer()) ?>
     </div>
@@ -31,13 +31,13 @@ require_once __DIR__ . '/includes/header.php';
                             <span><i class="bi bi-clock me-1"></i><?= (int) $service['duration_minutes'] ?> min</span>
                         <?php endif; ?>
                     </div>
-                    <a href="appointment.php" class="btn btn-outline-primary btn-sm mt-3 rounded-pill">Book This Service</a>
+                    <a href="appointment.php" class="btn btn-outline-primary btn-sm mt-3 rounded-pill"><?= e(t('services.book_this')) ?></a>
                 </div>
             </div>
         <?php endforeach; ?>
     </div>
     <div class="text-center mt-5">
-        <a href="appointment.php" class="btn btn-primary btn-lg rounded-pill px-5">Book a Consultation</a>
+        <a href="appointment.php" class="btn btn-primary btn-lg rounded-pill px-5"><?= e(t('services.book_consultation')) ?></a>
     </div>
 </div>
 

@@ -12,3 +12,5 @@ define('APP_NAME', 'OptisMentis Hypnotherapy');
 define('APP_BASE_URL', '/hypnosis-app');
 define('APP_THEME_COLOR', '#7aa7d8');
 define('APP_ROOT_PATH', dirname(__DIR__));
+
+require_once __DIR__ . '/translations.php';

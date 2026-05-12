@@ -4,6 +4,52 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../config/app.php';
 
+if (isset($_GET['lang']) && is_string($_GET['lang']) && in_array($_GET['lang'], APP_SUPPORTED_LOCALES, true)) {
+    $_SESSION['app_locale'] = $_GET['lang'];
+}
+
+function current_locale(): string
+{
+    $locale = $_SESSION['app_locale'] ?? APP_DEFAULT_LOCALE;
+    return in_array($locale, APP_SUPPORTED_LOCALES, true) ? $locale : APP_DEFAULT_LOCALE;
+}
+
+function available_locales(): array
+{
+    return APP_LOCALE_META;
+}
+
+function language_switch_url(string $locale): string
+{
+    $uri = $_SERVER['REQUEST_URI'] ?? '/';
+    $parts = parse_url($uri);
+    $path = $parts['path'] ?? '/';
+    $query = [];
+
+    if (!empty($parts['query'])) {
+        parse_str($parts['query'], $query);
+    }
+
+    $query['lang'] = $locale;
+    return $path . '?' . http_build_query($query);
+}
+
+function t(string $key, array $replace = []): string
+{
+    $locale = current_locale();
+    $text = APP_TRANSLATIONS[$locale][$key] ?? APP_TRANSLATIONS[APP_DEFAULT_LOCALE][$key] ?? $key;
+
+    if ($replace) {
+        $pairs = [];
+        foreach ($replace as $name => $value) {
+            $pairs['{' . $name . '}'] = (string) $value;
+        }
+        $text = strtr($text, $pairs);
+    }
+
+    return $text;
+}
+
 function e(string $value): string
 {
     return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
@@ -98,7 +144,7 @@ function format_datetime(?string $dateTime): string
 
 function app_disclaimer(): string
 {
-    return 'MindCalm Hypnotherapy provides complementary wellness and behavioral support. It is not a replacement for medical, psychological, or psychiatric care. If you are experiencing a medical or mental health emergency, contact emergency services or a licensed healthcare professional immediately.';
+    return t('disclaimer.main');
 }
 
 function safe_substr(string $value, int $start, ?int $length = null): string
