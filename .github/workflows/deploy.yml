@@ -29,7 +29,7 @@ jobs:
           port:     21
           protocol: ftps          # use ftps (explicit TLS) — change to ftp if unsupported
           local-dir:  ./hypnosis-app/
-          server-dir: ${{ secrets.FTP_REMOTE_DIR || secrets.FTP_SERVER_DIR }}
+          server-dir: public_html/
           # Only upload files that changed since the last deploy.
           # On first run this uploads everything.
           state-name: .ftp-deploy-sync-state.json
