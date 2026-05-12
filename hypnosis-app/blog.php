@@ -32,7 +32,7 @@ require_once __DIR__ . '/includes/header.php';
                             By <?= e($post['author_name'] ?? 'Editorial Team') ?> &middot;
                             <?= e(date('M d, Y', strtotime($post['created_at']))) ?>
                         </p>
-                        <p class="text-muted"><?= e(mb_substr(strip_tags($post['content']), 0, 130)) ?>…</p>
+                        <p class="text-muted"><?= e(safe_substr(strip_tags($post['content']), 0, 130)) ?>…</p>
                         <a href="#" class="btn btn-outline-primary btn-sm rounded-pill mt-auto">Read More</a>
                     </div>
                 </div>

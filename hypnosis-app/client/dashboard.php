@@ -89,7 +89,7 @@ require_once __DIR__ . '/../includes/header.php';
                     <div class="card section-card p-3 h-100">
                         <div class="service-icon mb-2"><i class="bi bi-headphones"></i></div>
                         <h6 class="fw-bold small"><?= e($audio['title']) ?></h6>
-                        <p class="text-muted" style="font-size:.8rem"><?= e(mb_substr($audio['description'], 0, 60)) ?>…</p>
+                        <p class="text-muted" style="font-size:.8rem"><?= e(safe_substr($audio['description'], 0, 60)) ?>…</p>
                         <small class="text-secondary"><i class="bi bi-clock me-1"></i><?= (int) $audio['duration_minutes'] ?> min</small>
                     </div>
                 </div>
@@ -121,7 +121,7 @@ require_once __DIR__ . '/../includes/header.php';
                                 <td><?= $log['stress_score'] ?? '—' ?></td>
                                 <td><?= $log['sleep_score'] ?? '—' ?></td>
                                 <td><?= $log['craving_score'] ?? '—' ?></td>
-                                <td><?= e(mb_substr($log['journal_note'] ?? '', 0, 40)) ?></td>
+                                <td><?= e(safe_substr($log['journal_note'] ?? '', 0, 40)) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

@@ -92,7 +92,7 @@ require_once __DIR__ . '/includes/header.php';
                                 <i class="bi <?= e($service['icon']) ?>"></i>
                             </div>
                             <h6 class="fw-bold"><?= e($service['title']) ?></h6>
-                            <p class="text-muted small mb-0"><?= e(mb_substr($service['description'], 0, 90)) ?>…</p>
+                            <p class="text-muted small mb-0"><?= e(safe_substr($service['description'], 0, 90)) ?>…</p>
                         </div>
                     </div>
                 <?php endforeach; ?>

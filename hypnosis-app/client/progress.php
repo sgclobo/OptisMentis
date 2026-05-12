@@ -95,7 +95,7 @@ require_once __DIR__ . '/../includes/header.php';
                                 <td><?= $log['stress_score'] ?? '—' ?></td>
                                 <td><?= $log['sleep_score'] ?? '—' ?></td>
                                 <td><?= $log['craving_score'] ?? '—' ?></td>
-                                <td><?= e(mb_substr($log['journal_note'] ?? '', 0, 60)) ?></td>
+                                <td><?= e(safe_substr($log['journal_note'] ?? '', 0, 60)) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

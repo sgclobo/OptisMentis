@@ -67,7 +67,7 @@ require_once __DIR__ . '/../includes/header.php';
                             <?php foreach ($recentIntakes as $f): ?>
                                 <tr>
                                     <td><?= e($f['full_name']) ?></td>
-                                    <td><?= e(mb_substr($f['main_concern'], 0, 30)) ?></td>
+                                    <td><?= e(safe_substr($f['main_concern'], 0, 30)) ?></td>
                                     <td><span class="badge bg-warning text-dark"><?= e(ucfirst($f['status'])) ?></span></td>
                                     <td><a href="view_intake.php?id=<?= (int)$f['id'] ?>" class="btn btn-xs btn-sm btn-outline-secondary py-0">View</a></td>
                                 </tr>

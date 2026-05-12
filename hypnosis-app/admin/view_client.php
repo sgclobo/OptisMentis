@@ -99,7 +99,7 @@ require_once __DIR__ . '/../includes/header.php';
                                 <?php foreach ($intakes as $f): ?>
                                     <tr>
                                         <td><?= e(date('M d, Y', strtotime($f['created_at']))) ?></td>
-                                        <td><?= e(mb_substr($f['main_concern'], 0, 30)) ?></td>
+                                        <td><?= e(safe_substr($f['main_concern'], 0, 30)) ?></td>
                                         <td><span class="badge bg-warning text-dark"><?= e(ucfirst($f['status'])) ?></span></td>
                                         <td><a href="view_intake.php?id=<?= (int)$f['id'] ?>" class="btn btn-xs btn-sm btn-outline-secondary py-0">Review</a></td>
                                     </tr>
@@ -161,7 +161,7 @@ require_once __DIR__ . '/../includes/header.php';
                                         <td><?= $log['mood_score'] ?? '—' ?></td>
                                         <td><?= $log['stress_score'] ?? '—' ?></td>
                                         <td><?= $log['sleep_score'] ?? '—' ?></td>
-                                        <td><?= e(mb_substr($log['journal_note'] ?? '', 0, 40)) ?></td>
+                                        <td><?= e(safe_substr($log['journal_note'] ?? '', 0, 40)) ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>

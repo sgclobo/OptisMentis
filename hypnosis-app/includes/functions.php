@@ -100,3 +100,16 @@ function app_disclaimer(): string
 {
     return 'MindCalm Hypnotherapy provides complementary wellness and behavioral support. It is not a replacement for medical, psychological, or psychiatric care. If you are experiencing a medical or mental health emergency, contact emergency services or a licensed healthcare professional immediately.';
 }
+
+function safe_substr(string $value, int $start, ?int $length = null): string
+{
+    if (function_exists('mb_substr')) {
+        return $length === null
+            ? mb_substr($value, $start)
+            : mb_substr($value, $start, $length);
+    }
+
+    return $length === null
+        ? substr($value, $start)
+        : substr($value, $start, $length);
+}

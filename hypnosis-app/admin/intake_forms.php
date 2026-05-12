@@ -31,7 +31,7 @@ require_once __DIR__ . '/../includes/header.php';
                         <tr>
                             <td><?= e($f['full_name']) ?></td>
                             <td><?= e($f['email']) ?></td>
-                            <td><?= e(mb_substr($f['main_concern'], 0, 40)) ?></td>
+                            <td><?= e(safe_substr($f['main_concern'], 0, 40)) ?></td>
                             <td><?= e(date('M d, Y', strtotime($f['created_at']))) ?></td>
                             <td>
                                 <?php $badge = ['new' => 'warning', 'reviewed' => 'info', 'accepted' => 'success', 'referred' => 'primary', 'rejected' => 'danger']; ?>
