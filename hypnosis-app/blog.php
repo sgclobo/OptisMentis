@@ -3,18 +3,18 @@
 declare(strict_types=1);
 require_once __DIR__ . '/config/db.php';
 
-$pageTitle = 'Education Blog — ' . APP_NAME;
+$pageTitle = t('blog.page_title') . ' - ' . APP_NAME;
 $stmt = $pdo->query("SELECT bp.*, u.full_name AS author_name FROM blog_posts bp LEFT JOIN users u ON u.id = bp.author_id WHERE bp.status = 'published' ORDER BY bp.created_at DESC");
 $posts = $stmt->fetchAll();
 require_once __DIR__ . '/includes/header.php';
 ?>
 
 <div class="container">
-    <h1 class="page-title mt-4 mb-2">Education &amp; Insights</h1>
-    <p class="text-muted mb-4">Professional articles and resources about hypnotherapy, relaxation, and emotional wellbeing.</p>
+    <h1 class="page-title mt-4 mb-2"><?= e(t('blog.heading')) ?></h1>
+    <p class="text-muted mb-4"><?= e(t('blog.intro')) ?></p>
 
     <?php if (empty($posts)): ?>
-        <div class="alert alert-info">No articles have been published yet. Check back soon.</div>
+        <div class="alert alert-info"><?= e(t('blog.empty')) ?></div>
     <?php else: ?>
         <div class="row g-4">
             <?php foreach ($posts as $post): ?>
@@ -29,11 +29,11 @@ require_once __DIR__ . '/includes/header.php';
                         <?php endif; ?>
                         <h5 class="fw-bold"><?= e($post['title']) ?></h5>
                         <p class="text-muted small">
-                            By <?= e($post['author_name'] ?? 'Editorial Team') ?> &middot;
+                            <?= e(t('blog.by')) ?> <?= e($post['author_name'] ?? t('blog.editorial_team')) ?> &middot;
                             <?= e(date('M d, Y', strtotime($post['created_at']))) ?>
                         </p>
                         <p class="text-muted"><?= e(safe_substr(strip_tags($post['content']), 0, 130)) ?>…</p>
-                        <a href="#" class="btn btn-outline-primary btn-sm rounded-pill mt-auto">Read More</a>
+                        <a href="#" class="btn btn-outline-primary btn-sm rounded-pill mt-auto"><?= e(t('blog.read_more')) ?></a>
                     </div>
                 </div>
             <?php endforeach; ?>

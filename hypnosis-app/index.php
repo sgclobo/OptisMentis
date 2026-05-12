@@ -11,7 +11,7 @@ $services = $stmtServices->fetchAll();
 $stmtAudio = $pdo->query("SELECT * FROM audio_sessions WHERE is_active = 1 AND access_type = 'free' LIMIT 4");
 $freeSessions = $stmtAudio->fetchAll();
 
-$pageTitle = APP_NAME . ' — Professional Hypnotherapy Services';
+$pageTitle = t('home.page_title', ['app' => APP_NAME]);
 require_once __DIR__ . '/includes/header.php';
 ?>
 
@@ -19,24 +19,24 @@ require_once __DIR__ . '/includes/header.php';
 <section class="container my-5">
     <div class="hero text-center">
         <span class="badge bg-primary bg-opacity-10 text-primary fw-semibold mb-3 rounded-pill px-3 py-2">
-            <i class="bi bi-flower2 me-1"></i>Professional Hypnotherapy
+            <i class="bi bi-flower2 me-1"></i><?= e(t('home.badge')) ?>
         </span>
-        <h1 class="display-5 fw-bold mb-3">Transform Your Mind,<br>Restore Your Calm</h1>
+        <h1 class="display-5 fw-bold mb-3"><?= e(t('home.hero_title')) ?></h1>
         <p class="lead text-muted mx-auto mb-4" style="max-width:620px">
-            Professional hypnotherapy support for stress, habits, sleep, confidence, and emotional wellness.
+            <?= e(t('home.hero_intro')) ?>
         </p>
         <div class="d-flex flex-wrap justify-content-center gap-3">
             <a href="appointment.php" class="btn btn-primary btn-lg px-4 rounded-pill">
-                <i class="bi bi-calendar3 me-2"></i>Book a Consultation
+                <i class="bi bi-calendar3 me-2"></i><?= e(t('home.book_consultation')) ?>
             </a>
             <a href="intake_form.php" class="btn btn-outline-primary btn-lg px-4 rounded-pill">
-                <i class="bi bi-clipboard2-pulse me-2"></i>Complete Intake Form
+                <i class="bi bi-clipboard2-pulse me-2"></i><?= e(t('home.complete_intake')) ?>
             </a>
         </div>
         <div class="mt-4 d-flex flex-wrap justify-content-center gap-4 text-secondary small">
-            <span><i class="bi bi-shield-check text-success me-1"></i>Safe &amp; Confidential</span>
-            <span><i class="bi bi-laptop me-1 text-primary"></i>Online &amp; In-Person</span>
-            <span><i class="bi bi-award me-1 text-primary"></i>Professional Practitioners</span>
+            <span><i class="bi bi-shield-check text-success me-1"></i><?= e(t('home.safe_confidential')) ?></span>
+            <span><i class="bi bi-laptop me-1 text-primary"></i><?= e(t('home.online_in_person')) ?></span>
+            <span><i class="bi bi-award me-1 text-primary"></i><?= e(t('home.professional_practitioners')) ?></span>
         </div>
     </div>
 </section>
@@ -45,31 +45,31 @@ require_once __DIR__ . '/includes/header.php';
 <section class="container my-5">
     <div class="row align-items-center g-4">
         <div class="col-lg-6">
-            <h2 class="page-title mb-3">What is Hypnotherapy?</h2>
-            <p class="text-muted">Hypnotherapy is a complementary wellness approach that uses guided relaxation and focused suggestion to support positive change. Here is what it is — and what it is not:</p>
+            <h2 class="page-title mb-3"><?= e(t('home.what_is_title')) ?></h2>
+            <p class="text-muted"><?= e(t('home.what_is_intro')) ?></p>
             <ul class="list-group list-group-flush mt-3">
                 <li class="list-group-item bg-transparent d-flex align-items-start gap-2">
                     <i class="bi bi-check-circle-fill text-success mt-1 flex-shrink-0"></i>
-                    <span><strong>You remain in full control</strong> throughout every session. You can end the session at any point.</span>
+                    <span><?= e(t('home.what_is_1')) ?></span>
                 </li>
                 <li class="list-group-item bg-transparent d-flex align-items-start gap-2">
                     <i class="bi bi-check-circle-fill text-success mt-1 flex-shrink-0"></i>
-                    <span><strong>It is a collaborative process</strong> — the therapist guides, but your mind does the work.</span>
+                    <span><?= e(t('home.what_is_2')) ?></span>
                 </li>
                 <li class="list-group-item bg-transparent d-flex align-items-start gap-2">
                     <i class="bi bi-check-circle-fill text-success mt-1 flex-shrink-0"></i>
-                    <span><strong>It supports relaxation and behavioral change</strong> — ideal for habits, stress, sleep, and emotional wellness.</span>
+                    <span><?= e(t('home.what_is_3')) ?></span>
                 </li>
                 <li class="list-group-item bg-transparent d-flex align-items-start gap-2">
                     <i class="bi bi-x-circle-fill text-danger mt-1 flex-shrink-0"></i>
-                    <span><strong>It is not magic or mind control.</strong> No one can make you do anything against your values or will.</span>
+                    <span><?= e(t('home.what_is_4')) ?></span>
                 </li>
             </ul>
         </div>
         <div class="col-lg-6">
             <div class="card section-card bg-light p-4">
-                <h5 class="fw-bold text-primary mb-3"><i class="bi bi-lightbulb me-2"></i>Did You Know?</h5>
-                <p class="text-muted">During hypnotherapy, most people describe feeling like they are in a relaxed, daydream-like state — similar to the moments just before falling asleep. The mind becomes more open to positive perspectives, which is where lasting change often begins.</p>
+                <h5 class="fw-bold text-primary mb-3"><i class="bi bi-lightbulb me-2"></i><?= e(t('home.did_you_know_title')) ?></h5>
+                <p class="text-muted"><?= e(t('home.did_you_know_text')) ?></p>
                 <div class="wellness-banner mt-3">
                     <small class="text-muted"><i class="bi bi-info-circle me-1"></i><?= e(app_disclaimer()) ?></small>
                 </div>
@@ -81,8 +81,8 @@ require_once __DIR__ . '/includes/header.php';
 <!-- ================== SERVICES ====================== -->
 <section class="bg-light rounded-soft py-5 my-5">
     <div class="container">
-        <h2 class="page-title text-center mb-2">Our Therapy Support Areas</h2>
-        <p class="text-center text-muted mb-4">Personalized, professional hypnotherapy sessions tailored to your unique journey.</p>
+        <h2 class="page-title text-center mb-2"><?= e(t('home.services_heading')) ?></h2>
+        <p class="text-center text-muted mb-4"><?= e(t('home.services_intro')) ?></p>
         <?php if ($services): ?>
             <div class="row g-4">
                 <?php foreach ($services as $service): ?>
@@ -99,30 +99,30 @@ require_once __DIR__ . '/includes/header.php';
             </div>
         <?php endif; ?>
         <div class="text-center mt-4">
-            <a href="services.php" class="btn btn-outline-primary rounded-pill px-4">View All Services</a>
+            <a href="services.php" class="btn btn-outline-primary rounded-pill px-4"><?= e(t('home.view_all_services')) ?></a>
         </div>
     </div>
 </section>
 
 <!-- ================ HOW IT WORKS =================== -->
 <section class="container my-5">
-    <h2 class="page-title text-center mb-2">How It Works</h2>
-    <p class="text-center text-muted mb-5">A simple, supportive path towards your wellness goals.</p>
+    <h2 class="page-title text-center mb-2"><?= e(t('home.how_it_works_title')) ?></h2>
+    <p class="text-center text-muted mb-5"><?= e(t('home.how_it_works_intro')) ?></p>
     <div class="row g-3 justify-content-center text-center">
         <?php
         $steps = [
-            ['icon' => 'bi-clipboard2-pulse', 'step' => 1, 'title' => 'Complete Intake Form',         'desc' => 'Share your background and goals confidentially.'],
-            ['icon' => 'bi-chat-dots',         'step' => 2, 'title' => 'Initial Consultation',        'desc' => 'A relaxed conversation to understand your needs.'],
-            ['icon' => 'bi-map',               'step' => 3, 'title' => 'Personalized Session Plan',   'desc' => 'A tailored plan built around your goals.'],
-            ['icon' => 'bi-headphones',        'step' => 4, 'title' => 'Hypnotherapy Sessions',       'desc' => 'In-person or online sessions at your own pace.'],
-            ['icon' => 'bi-graph-up',          'step' => 5, 'title' => 'Follow-Up & Progress',        'desc' => 'Ongoing check-ins to track your transformation.'],
+            ['icon' => 'bi-clipboard2-pulse', 'step' => 1, 'title' => t('home.step_1_title'), 'desc' => t('home.step_1_desc')],
+            ['icon' => 'bi-chat-dots', 'step' => 2, 'title' => t('home.step_2_title'), 'desc' => t('home.step_2_desc')],
+            ['icon' => 'bi-map', 'step' => 3, 'title' => t('home.step_3_title'), 'desc' => t('home.step_3_desc')],
+            ['icon' => 'bi-headphones', 'step' => 4, 'title' => t('home.step_4_title'), 'desc' => t('home.step_4_desc')],
+            ['icon' => 'bi-graph-up', 'step' => 5, 'title' => t('home.step_5_title'), 'desc' => t('home.step_5_desc')],
         ];
         foreach ($steps as $s):
         ?>
             <div class="col-6 col-lg-2">
                 <div class="bg-light rounded-soft p-3 h-100">
                     <div class="service-icon mx-auto mb-2"><i class="bi <?= e($s['icon']) ?>"></i></div>
-                    <div class="badge bg-primary rounded-pill mb-1">Step <?= $s['step'] ?></div>
+                    <div class="badge bg-primary rounded-pill mb-1"><?= e(t('home.step_label', ['n' => $s['step']])) ?></div>
                     <h6 class="fw-bold small"><?= e($s['title']) ?></h6>
                     <p class="text-muted" style="font-size:.78rem"><?= e($s['desc']) ?></p>
                 </div>
@@ -134,8 +134,8 @@ require_once __DIR__ . '/includes/header.php';
 <!-- ============== FREE AUDIO PREVIEW =============== -->
 <?php if (!empty($freeSessions)): ?>
     <section class="container my-5">
-        <h2 class="page-title text-center mb-2">Free Audio Previews</h2>
-        <p class="text-center text-muted mb-4">Experience a sample of our guided relaxation library before booking your first session.</p>
+        <h2 class="page-title text-center mb-2"><?= e(t('home.audio_heading')) ?></h2>
+        <p class="text-center text-muted mb-4"><?= e(t('home.audio_intro')) ?></p>
         <div class="row g-4">
             <?php foreach ($freeSessions as $audio): ?>
                 <div class="col-sm-6 col-lg-3">
@@ -145,9 +145,9 @@ require_once __DIR__ . '/includes/header.php';
                         <p class="text-muted small"><?= e($audio['description']) ?></p>
                         <small class="text-secondary"><i class="bi bi-clock me-1"></i><?= (int) $audio['duration_minutes'] ?> min</small>
                         <?php if (is_logged_in()): ?>
-                            <a href="client/audio_library.php" class="btn btn-sm btn-outline-primary mt-3">Listen</a>
+                            <a href="client/audio_library.php" class="btn btn-sm btn-outline-primary mt-3"><?= e(t('home.listen')) ?></a>
                         <?php else: ?>
-                            <a href="register.php" class="btn btn-sm btn-outline-primary mt-3">Register to Listen</a>
+                            <a href="register.php" class="btn btn-sm btn-outline-primary mt-3"><?= e(t('home.register_to_listen')) ?></a>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -159,13 +159,13 @@ require_once __DIR__ . '/includes/header.php';
 <!-- ================ TESTIMONIALS ================== -->
 <section class="bg-light rounded-soft py-5 my-5">
     <div class="container">
-        <h2 class="page-title text-center mb-4">What Clients Say</h2>
+        <h2 class="page-title text-center mb-4"><?= e(t('home.what_clients_say')) ?></h2>
         <div class="row g-4">
             <?php
             $testimonials = [
-                ['quote' => 'After years of disrupted sleep, I finally feel rested. The sessions were calm, professional, and genuinely supportive.', 'name' => 'Sarah M.', 'context' => 'Sleep Improvement'],
-                ['quote' => "I didn't expect to see a difference so quickly. My anxiety feels much more manageable now and I have useful tools to use daily.", 'name' => 'James R.', 'context' => 'Stress and Anxiety'],
-                ['quote' => 'The online sessions were convenient and just as effective as I hoped. I feel more confident every week.', 'name' => 'Priya K.', 'context' => 'Confidence Sessions'],
+                ['quote' => t('home.testimonial_1_quote'), 'name' => 'Sarah M.', 'context' => t('home.testimonial_1_context')],
+                ['quote' => t('home.testimonial_2_quote'), 'name' => 'James R.', 'context' => t('home.testimonial_2_context')],
+                ['quote' => t('home.testimonial_3_quote'), 'name' => 'Priya K.', 'context' => t('home.testimonial_3_context')],
             ];
             foreach ($testimonials as $t):
             ?>
@@ -183,13 +183,13 @@ require_once __DIR__ . '/includes/header.php';
                 </div>
             <?php endforeach; ?>
         </div>
-        <p class="text-center text-muted small mt-3">* Testimonials are representative client experiences. Results may vary.</p>
+        <p class="text-center text-muted small mt-3"><?= e(t('home.testimonials_note')) ?></p>
     </div>
 </section>
 
 <!-- =================== FAQ ======================== -->
 <section class="container my-5">
-    <h2 class="page-title text-center mb-4">Frequently Asked Questions</h2>
+    <h2 class="page-title text-center mb-4"><?= e(t('home.faq_title')) ?></h2>
     <div class="wellness-banner text-muted small mb-4">
         <i class="bi bi-info-circle me-1"></i><?= e(app_disclaimer()) ?>
     </div>
@@ -197,23 +197,23 @@ require_once __DIR__ . '/includes/header.php';
         <?php
         $faqs = [
             [
-                'q' => 'Is hypnosis safe?',
-                'a' => 'Yes. Hypnotherapy is a safe and well-established complementary approach when practised by a qualified professional. You remain aware and in control throughout the entire session.'
+                'q' => t('home.faq_q1'),
+                'a' => t('home.faq_a1')
             ],
             [
-                'q' => 'Will I lose control during a session?',
-                'a' => 'No. You cannot be made to do anything against your values or wishes. You retain full awareness and can end the session at any time.'
+                'q' => t('home.faq_q2'),
+                'a' => t('home.faq_a2')
             ],
             [
-                'q' => 'How many sessions will I need?',
-                'a' => 'This varies by individual and by goal. Most clients notice meaningful change within 3–6 sessions, though your therapist will discuss a plan personalised to you during your initial consultation.'
+                'q' => t('home.faq_q3'),
+                'a' => t('home.faq_a3')
             ],
             [
-                'q' => 'Is online hypnotherapy possible?',
-                'a' => 'Yes. Online sessions are highly effective and offer the convenience of attending from your own comfortable environment using a video call platform.'
+                'q' => t('home.faq_q4'),
+                'a' => t('home.faq_a4')
             ],
             [
-                'q' => 'Is this a replacement for medical treatment?',
+                'q' => t('home.faq_q5'),
                 'a' => 'No. ' . app_disclaimer()
             ],
         ];
@@ -238,11 +238,11 @@ require_once __DIR__ . '/includes/header.php';
 <!-- ================== FINAL CTA =================== -->
 <section class="container my-5">
     <div class="hero text-center">
-        <h2 class="page-title mb-3">Begin Your Calm Transformation Today</h2>
-        <p class="text-muted mb-4">Take the first step towards lasting wellbeing. Our therapists are here to support you at your own pace.</p>
+        <h2 class="page-title mb-3"><?= e(t('home.final_title')) ?></h2>
+        <p class="text-muted mb-4"><?= e(t('home.final_intro')) ?></p>
         <div class="d-flex flex-wrap justify-content-center gap-3">
-            <a href="appointment.php" class="btn btn-primary btn-lg px-4 rounded-pill">Book a Consultation</a>
-            <a href="intake_form.php" class="btn btn-outline-primary btn-lg px-4 rounded-pill">Complete Intake Form</a>
+            <a href="appointment.php" class="btn btn-primary btn-lg px-4 rounded-pill"><?= e(t('home.book_consultation')) ?></a>
+            <a href="intake_form.php" class="btn btn-outline-primary btn-lg px-4 rounded-pill"><?= e(t('home.complete_intake')) ?></a>
         </div>
     </div>
 </section>
