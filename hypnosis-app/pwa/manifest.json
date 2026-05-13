@@ -2,20 +2,21 @@
   "name": "OptisMentis Hypnotherapy",
   "short_name": "OptisMentis",
   "description": "Professional hypnotherapy support for stress, habits, sleep, confidence, and emotional wellness.",
-  "start_url": "/index.php",
+  "start_url": "/hypnosis-app/index.php",
   "display": "standalone",
   "background_color": "#f9fbff",
   "theme_color": "#7aa7d8",
   "orientation": "portrait",
+  "scope": "/hypnosis-app/",
   "icons": [
     {
-      "src": "/assets/img/icon-192.png",
+      "src": "/hypnosis-app/assets/img/android-chrome-192x192.png",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "any maskable"
     },
     {
-      "src": "/assets/img/icon-512.png",
+      "src": "/hypnosis-app/assets/img/android-chrome-512x512.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"

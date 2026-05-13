@@ -24,7 +24,8 @@ require_once __DIR__ . '/includes/header.php';
 <section class="container my-5">
     <div class="hero text-center">
         <span class="badge bg-primary bg-opacity-10 text-primary fw-semibold mb-3 rounded-pill px-3 py-2">
-            <i class="bi bi-flower2 me-1"></i><?= e(t('home.badge')) ?>
+            <img src="<?= APP_BASE_URL ?>/assets/img/brand-mark.png" alt="" width="20" height="20" class="rounded-2 border border-light bg-white me-1 align-text-bottom">
+            <?= e(t('home.badge')) ?>
         </span>
         <h1 class="display-5 fw-bold mb-3"><?= e(t('home.hero_title')) ?></h1>
         <p class="lead text-muted mx-auto mb-4" style="max-width:620px">

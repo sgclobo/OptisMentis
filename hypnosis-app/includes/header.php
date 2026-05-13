@@ -16,9 +16,14 @@ $locale = current_locale();
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= e($pageTitle) ?></title>
     <meta name="theme-color" content="#7aa7d8">
+    <meta name="application-name" content="<?= e(APP_NAME) ?>">
+    <meta name="apple-mobile-web-app-title" content="<?= e(APP_NAME) ?>">
     <meta name="description" content="<?= e(t('meta.description')) ?>">
     <link rel="manifest" href="<?= APP_BASE_URL ?>/pwa/manifest.json">
-    <link rel="icon" type="image/png" href="<?= APP_BASE_URL ?>/assets/img/icon-192.png">
+    <link rel="icon" href="<?= APP_BASE_URL ?>/assets/img/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= APP_BASE_URL ?>/assets/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= APP_BASE_URL ?>/assets/img/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= APP_BASE_URL ?>/assets/img/apple-touch-icon.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="<?= APP_BASE_URL ?>/assets/css/style.css">

@@ -4,8 +4,9 @@ declare(strict_types=1);
 ?>
 <nav class="navbar navbar-expand-lg sticky-top navbar-light bg-white border-bottom shadow-sm">
     <div class="container">
-        <a class="navbar-brand fw-bold text-primary" href="<?= APP_BASE_URL ?>/index.php">
-            <i class="bi bi-flower2 me-1"></i><?= e(APP_NAME) ?>
+        <a class="navbar-brand fw-bold text-primary d-flex align-items-center gap-2" href="<?= APP_BASE_URL ?>/index.php">
+            <img src="<?= APP_BASE_URL ?>/assets/img/brand-mark.png" alt="<?= e(APP_NAME) ?>" width="32" height="32" class="rounded-3 border border-light bg-white shadow-sm">
+            <span><?= e(APP_NAME) ?></span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
