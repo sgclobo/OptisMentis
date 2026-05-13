@@ -3,10 +3,10 @@
 declare(strict_types=1);
 
 return [
-    'host' => '127.0.0.1',
+    'host' => 'localhost',
     'port' => 3306,
-    'name' => 'u781534777_hypnosis',
-    'user' => 'u781534777_hypnotherapist',
-    'pass' => 'S3rgiio@1060',
+    'name' => 'your_database_name',
+    'user' => 'your_database_user',
+    'pass' => 'your_database_password',
     'charset' => 'utf8mb4',
 ];

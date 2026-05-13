@@ -4,22 +4,57 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/app.php';
 
-$config = [
-    'host' => getenv('DB_HOST') ?: '127.0.0.1',
-    'port' => (int) (getenv('DB_PORT') ?: 3306),
-    'name' => getenv('DB_NAME') ?: 'hypnosis_app',
-    'user' => getenv('DB_USER') ?: 'root',
-    'pass' => getenv('DB_PASS') ?: '',
-    'charset' => getenv('DB_CHARSET') ?: 'utf8mb4',
-];
+/**
+ * Read env vars robustly across SAPIs where getenv can be disabled/unreliable.
+ */
+if (!function_exists('db_env')) {
+    function db_env(string $key): ?string
+    {
+        $value = getenv($key);
+        if ($value !== false && $value !== '') {
+            return (string) $value;
+        }
 
-$localConfigFile = __DIR__ . '/db.local.php';
-if (is_file($localConfigFile)) {
-    $localConfig = require $localConfigFile;
-    if (is_array($localConfig)) {
-        $config = array_merge($config, $localConfig);
+        if (isset($_ENV[$key]) && $_ENV[$key] !== '') {
+            return (string) $_ENV[$key];
+        }
+
+        if (isset($_SERVER[$key]) && $_SERVER[$key] !== '') {
+            return (string) $_SERVER[$key];
+        }
+
+        return null;
     }
 }
+
+$config = [
+    'host' => db_env('DB_HOST') ?: '127.0.0.1',
+    'port' => (int) (db_env('DB_PORT') ?: 3306),
+    'name' => db_env('DB_NAME') ?: 'hypnosis_app',
+    'user' => db_env('DB_USER') ?: 'root',
+    'pass' => db_env('DB_PASS') ?: '',
+    'charset' => db_env('DB_CHARSET') ?: 'utf8mb4',
+];
+
+$localConfigCandidates = [
+    __DIR__ . '/db.local.php',
+    __DIR__ . '/db.locl.php',
+    __DIR__ . '/db..locl.php',
+];
+
+$loadedLocalConfigFile = null;
+foreach ($localConfigCandidates as $candidate) {
+    if (is_file($candidate)) {
+        $localConfig = require $candidate;
+        if (is_array($localConfig)) {
+            $config = array_merge($config, $localConfig);
+            $loadedLocalConfigFile = basename($candidate);
+            break;
+        }
+    }
+}
+
+$configSource = $loadedLocalConfigFile !== null ? 'local-file:' . $loadedLocalConfigFile : 'environment/defaults';
 
 $dsn = sprintf(
     'mysql:host=%s;port=%d;dbname=%s;charset=%s',
@@ -41,7 +76,7 @@ try {
         ]
     );
 } catch (PDOException $exception) {
-    error_log('Database connection failed: ' . $exception->getMessage());
+    error_log('Database connection failed (' . $configSource . '): ' . $exception->getMessage());
     http_response_code(500);
     exit('Database connection failed. Check config/db.local.php or the DB_* environment variables.');
 }
