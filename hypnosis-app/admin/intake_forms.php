@@ -7,22 +7,22 @@ require_once __DIR__ . '/../includes/auth_check.php';
 
 $forms = $pdo->query("SELECT f.*, u.full_name AS account_name FROM intake_forms f LEFT JOIN users u ON u.id = f.user_id ORDER BY f.created_at DESC")->fetchAll();
 
-$pageTitle = 'Intake Forms — Admin — ' . APP_NAME;
+$pageTitle = t('admin.intakes.page_title') . ' - ' . APP_NAME;
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="container">
-    <h1 class="page-title mt-4 mb-3">Intake Forms</h1>
+    <h1 class="page-title mt-4 mb-3"><?= e(t('admin.intakes.heading')) ?></h1>
     <div class="card section-card">
         <div class="table-responsive">
             <table class="table table-hover mb-0">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Main Concern</th>
-                        <th>Submitted</th>
-                        <th>Status</th>
+                        <th><?= e(t('common.name')) ?></th>
+                        <th><?= e(t('common.email')) ?></th>
+                        <th><?= e(t('admin.intakes.main_concern')) ?></th>
+                        <th><?= e(t('admin.intakes.submitted')) ?></th>
+                        <th><?= e(t('common.status')) ?></th>
                         <th></th>
                     </tr>
                 </thead>
@@ -37,7 +37,7 @@ require_once __DIR__ . '/../includes/header.php';
                                 <?php $badge = ['new' => 'warning', 'reviewed' => 'info', 'accepted' => 'success', 'referred' => 'primary', 'rejected' => 'danger']; ?>
                                 <span class="badge bg-<?= e($badge[$f['status']] ?? 'secondary') ?>"><?= e(ucfirst($f['status'])) ?></span>
                             </td>
-                            <td><a href="view_intake.php?id=<?= (int)$f['id'] ?>" class="btn btn-sm btn-outline-primary rounded-pill">Review</a></td>
+                            <td><a href="view_intake.php?id=<?= (int)$f['id'] ?>" class="btn btn-sm btn-outline-primary rounded-pill"><?= e(t('admin.intakes.review')) ?></a></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

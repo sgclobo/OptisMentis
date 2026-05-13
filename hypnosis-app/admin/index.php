@@ -14,22 +14,22 @@ $unreadMessages  = (int) $pdo->query("SELECT COUNT(*) FROM messages WHERE is_rea
 $recentIntakes   = $pdo->query("SELECT * FROM intake_forms ORDER BY created_at DESC LIMIT 5")->fetchAll();
 $upcomingAppts   = $pdo->query("SELECT a.*, u.full_name AS client_name FROM appointments a LEFT JOIN users u ON u.id = a.user_id WHERE a.status IN ('requested','confirmed') ORDER BY a.preferred_date ASC LIMIT 5")->fetchAll();
 
-$pageTitle = 'Admin Dashboard — ' . APP_NAME;
+$pageTitle = t('admin.dashboard.page_title') . ' - ' . APP_NAME;
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="container">
-    <h1 class="page-title mt-4 mb-1">Admin Dashboard</h1>
-    <p class="text-muted mb-4">Overview of platform activity.</p>
+    <h1 class="page-title mt-4 mb-1"><?= e(t('admin.dashboard.heading')) ?></h1>
+    <p class="text-muted mb-4"><?= e(t('admin.dashboard.intro')) ?></p>
 
     <!-- Stats row -->
     <div class="row g-4 mb-4">
         <?php
         $stats = [
-            ['icon' => 'bi-people',        'value' => $totalClients,   'label' => 'Total Clients',         'link' => 'clients.php',      'color' => 'primary'],
-            ['icon' => 'bi-clipboard2',    'value' => $newIntakes,     'label' => 'New Intake Forms',      'link' => 'intake_forms.php', 'color' => 'warning'],
-            ['icon' => 'bi-calendar3',     'value' => $pendingAppts,   'label' => 'Pending Appointments',  'link' => 'appointments.php', 'color' => 'info'],
-            ['icon' => 'bi-chat-dots',     'value' => $unreadMessages, 'label' => 'Unread Messages',       'link' => 'messages.php',     'color' => 'danger'],
+            ['icon' => 'bi-people',        'value' => $totalClients,   'label' => t('admin.dashboard.total_clients'),        'link' => 'clients.php',      'color' => 'primary'],
+            ['icon' => 'bi-clipboard2',    'value' => $newIntakes,     'label' => t('admin.dashboard.new_intakes'),          'link' => 'intake_forms.php', 'color' => 'warning'],
+            ['icon' => 'bi-calendar3',     'value' => $pendingAppts,   'label' => t('admin.dashboard.pending_appointments'), 'link' => 'appointments.php', 'color' => 'info'],
+            ['icon' => 'bi-chat-dots',     'value' => $unreadMessages, 'label' => t('admin.dashboard.unread_messages'),      'link' => 'messages.php',     'color' => 'danger'],
         ];
         foreach ($stats as $s):
         ?>
@@ -50,16 +50,16 @@ require_once __DIR__ . '/../includes/header.php';
         <div class="col-lg-6">
             <div class="card section-card p-3">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h6 class="fw-bold mb-0">Recent Intake Forms</h6>
-                    <a href="intake_forms.php" class="btn btn-sm btn-outline-primary rounded-pill">View All</a>
+                    <h6 class="fw-bold mb-0"><?= e(t('admin.dashboard.recent_intakes')) ?></h6>
+                    <a href="intake_forms.php" class="btn btn-sm btn-outline-primary rounded-pill"><?= e(t('common.view_all')) ?></a>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover table-sm mb-0">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Concern</th>
-                                <th>Status</th>
+                                <th><?= e(t('common.name')) ?></th>
+                                <th><?= e(t('admin.intakes.main_concern')) ?></th>
+                                <th><?= e(t('common.status')) ?></th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -69,7 +69,7 @@ require_once __DIR__ . '/../includes/header.php';
                                     <td><?= e($f['full_name']) ?></td>
                                     <td><?= e(safe_substr($f['main_concern'], 0, 30)) ?></td>
                                     <td><span class="badge bg-warning text-dark"><?= e(ucfirst($f['status'])) ?></span></td>
-                                    <td><a href="view_intake.php?id=<?= (int)$f['id'] ?>" class="btn btn-xs btn-sm btn-outline-secondary py-0">View</a></td>
+                                    <td><a href="view_intake.php?id=<?= (int)$f['id'] ?>" class="btn btn-xs btn-sm btn-outline-secondary py-0"><?= e(t('common.view')) ?></a></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -82,16 +82,16 @@ require_once __DIR__ . '/../includes/header.php';
         <div class="col-lg-6">
             <div class="card section-card p-3">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h6 class="fw-bold mb-0">Upcoming Appointments</h6>
-                    <a href="appointments.php" class="btn btn-sm btn-outline-primary rounded-pill">View All</a>
+                    <h6 class="fw-bold mb-0"><?= e(t('admin.dashboard.upcoming_appointments')) ?></h6>
+                    <a href="appointments.php" class="btn btn-sm btn-outline-primary rounded-pill"><?= e(t('common.view_all')) ?></a>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover table-sm mb-0">
                         <thead>
                             <tr>
-                                <th>Client</th>
-                                <th>Date</th>
-                                <th>Status</th>
+                                <th><?= e(t('admin.common.client')) ?></th>
+                                <th><?= e(t('common.date')) ?></th>
+                                <th><?= e(t('common.status')) ?></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -111,11 +111,11 @@ require_once __DIR__ . '/../includes/header.php';
 
     <!-- Quick links -->
     <div class="d-flex flex-wrap gap-2 mt-4 mb-5">
-        <a href="clients.php" class="btn btn-outline-primary rounded-pill"><i class="bi bi-people me-1"></i>Clients</a>
-        <a href="services.php" class="btn btn-outline-primary rounded-pill"><i class="bi bi-grid me-1"></i>Services</a>
-        <a href="audio_sessions.php" class="btn btn-outline-primary rounded-pill"><i class="bi bi-headphones me-1"></i>Audio</a>
-        <a href="blog_posts.php" class="btn btn-outline-primary rounded-pill"><i class="bi bi-journal me-1"></i>Blog</a>
-        <a href="settings.php" class="btn btn-outline-secondary rounded-pill"><i class="bi bi-gear me-1"></i>Settings</a>
+        <a href="clients.php" class="btn btn-outline-primary rounded-pill"><i class="bi bi-people me-1"></i><?= e(t('admin.common.clients')) ?></a>
+        <a href="services.php" class="btn btn-outline-primary rounded-pill"><i class="bi bi-grid me-1"></i><?= e(t('nav.services')) ?></a>
+        <a href="audio_sessions.php" class="btn btn-outline-primary rounded-pill"><i class="bi bi-headphones me-1"></i><?= e(t('admin.common.audio')) ?></a>
+        <a href="blog_posts.php" class="btn btn-outline-primary rounded-pill"><i class="bi bi-journal me-1"></i><?= e(t('admin.common.blog')) ?></a>
+        <a href="settings.php" class="btn btn-outline-secondary rounded-pill"><i class="bi bi-gear me-1"></i><?= e(t('admin.common.settings')) ?></a>
     </div>
 </div>
 

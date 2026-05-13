@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && verify_csrf_token(post('csrf_token'
     $newStatus = post('status');
     if ($apptId && in_array($newStatus, ['requested', 'confirmed', 'completed', 'cancelled'], true)) {
         $pdo->prepare("UPDATE appointments SET status = ? WHERE id = ?")->execute([$newStatus, $apptId]);
-        set_flash('success', 'Appointment status updated.');
+        set_flash('success', t('admin.appointments.flash_updated'));
     }
     redirect('/admin/appointments.php');
 }
@@ -22,25 +22,25 @@ $appointments = $pdo->query(
      ORDER BY a.preferred_date DESC LIMIT 100"
 )->fetchAll();
 
-$pageTitle = 'Appointments — Admin — ' . APP_NAME;
+$pageTitle = t('admin.appointments.page_title') . ' - ' . APP_NAME;
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="container">
-    <h1 class="page-title mt-4 mb-3">All Appointments</h1>
+    <h1 class="page-title mt-4 mb-3"><?= e(t('admin.appointments.heading')) ?></h1>
     <div class="card section-card">
         <div class="table-responsive">
             <table class="table table-hover mb-0">
                 <thead>
                     <tr>
                         <th>Client</th>
-                        <th>Email</th>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Service</th>
-                        <th>Format</th>
-                        <th>Status</th>
-                        <th>Update</th>
+                        <th><?= e(t('common.email')) ?></th>
+                        <th><?= e(t('common.date')) ?></th>
+                        <th><?= e(t('common.time')) ?></th>
+                        <th><?= e(t('common.service')) ?></th>
+                        <th><?= e(t('common.format')) ?></th>
+                        <th><?= e(t('common.status')) ?></th>
+                        <th><?= e(t('admin.common.update')) ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,7 +50,7 @@ require_once __DIR__ . '/../includes/header.php';
                             <td><?= e($a['email']) ?></td>
                             <td><?= e($a['preferred_date']) ?></td>
                             <td><?= e(date('h:i A', strtotime($a['preferred_time']))) ?></td>
-                            <td><?= e($a['service_type'] ?: 'Consultation') ?></td>
+                            <td><?= e($a['service_type'] ?: t('appointment.consultation')) ?></td>
                             <td><?= e(ucfirst(str_replace('_', ' ', $a['appointment_type']))) ?></td>
                             <td>
                                 <?php $badge = ['requested' => 'warning', 'confirmed' => 'success', 'completed' => 'secondary', 'cancelled' => 'danger']; ?>
@@ -65,7 +65,7 @@ require_once __DIR__ . '/../includes/header.php';
                                             <option value="<?= e($st) ?>" <?= $a['status'] === $st ? 'selected' : '' ?>><?= e(ucfirst($st)) ?></option>
                                         <?php endforeach; ?>
                                     </select>
-                                    <button class="btn btn-sm btn-primary rounded-pill">Save</button>
+                                    <button class="btn btn-sm btn-primary rounded-pill"><?= e(t('common.save')) ?></button>
                                 </form>
                             </td>
                         </tr>

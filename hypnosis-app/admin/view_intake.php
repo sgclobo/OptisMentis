@@ -7,7 +7,7 @@ require_once __DIR__ . '/../includes/auth_check.php';
 
 $id = (int) get('id');
 if (!$id) {
-    set_flash('danger', 'No intake form specified.');
+    set_flash('danger', t('admin.intakes.error_no_form'));
     redirect('/admin/intake_forms.php');
 }
 
@@ -15,7 +15,7 @@ $stmt = $pdo->prepare("SELECT * FROM intake_forms WHERE id = ?");
 $stmt->execute([$id]);
 $form = $stmt->fetch();
 if (!$form) {
-    set_flash('danger', 'Intake form not found.');
+    set_flash('danger', t('admin.intakes.error_not_found'));
     redirect('/admin/intake_forms.php');
 }
 
@@ -24,12 +24,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && verify_csrf_token(post('csrf_token'
     $notes  = post('therapist_notes');
     if (in_array($status, ['new', 'reviewed', 'accepted', 'referred', 'rejected'], true)) {
         $pdo->prepare("UPDATE intake_forms SET status = ?, therapist_notes = ? WHERE id = ?")->execute([$status, $notes, $id]);
-        set_flash('success', 'Intake form updated.');
+        set_flash('success', t('admin.intakes.flash_updated'));
         redirect('/admin/view_intake.php?id=' . $id);
     }
 }
 
-$pageTitle = 'Intake: ' . $form['full_name'] . ' — Admin';
+$pageTitle = t('admin.intake_detail.page_title', ['name' => $form['full_name']]) . ' - ' . APP_NAME;
 require_once __DIR__ . '/../includes/header.php';
 
 function yesno(mixed $val): string
@@ -44,15 +44,15 @@ function field(?string $val): string
 
 <div class="container" style="max-width:860px">
     <div class="d-flex align-items-center gap-3 mt-4 mb-3">
-        <a href="intake_forms.php" class="btn btn-outline-secondary btn-sm rounded-pill"><i class="bi bi-arrow-left me-1"></i>Back</a>
-        <h1 class="page-title mb-0">Intake: <?= e($form['full_name']) ?></h1>
+        <a href="intake_forms.php" class="btn btn-outline-secondary btn-sm rounded-pill"><i class="bi bi-arrow-left me-1"></i><?= e(t('common.back')) ?></a>
+        <h1 class="page-title mb-0"><?= e(t('admin.intake_detail.heading', ['name' => $form['full_name']])) ?></h1>
     </div>
 
     <form method="post" class="mb-4">
         <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
         <div class="card section-card p-3 d-flex flex-md-row gap-3 align-items-end">
             <div class="flex-grow-1">
-                <label class="form-label fw-semibold">Status</label>
+                <label class="form-label fw-semibold"><?= e(t('common.status')) ?></label>
                 <select name="status" class="form-select">
                     <?php foreach (['new', 'reviewed', 'accepted', 'referred', 'rejected'] as $st): ?>
                         <option value="<?= e($st) ?>" <?= $form['status'] === $st ? 'selected' : '' ?>><?= e(ucfirst($st)) ?></option>
@@ -60,10 +60,10 @@ function field(?string $val): string
                 </select>
             </div>
             <div class="flex-grow-1">
-                <label class="form-label fw-semibold">Therapist Notes</label>
+                <label class="form-label fw-semibold"><?= e(t('admin.intake_detail.therapist_notes')) ?></label>
                 <textarea name="therapist_notes" class="form-control" rows="2"><?= e($form['therapist_notes'] ?? '') ?></textarea>
             </div>
-            <button class="btn btn-primary rounded-pill align-self-end">Save</button>
+            <button class="btn btn-primary rounded-pill align-self-end"><?= e(t('common.save')) ?></button>
         </div>
     </form>
 

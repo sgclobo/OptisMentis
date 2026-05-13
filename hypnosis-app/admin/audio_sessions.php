@@ -30,12 +30,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && verify_csrf_token(post('csrf_token'
             $pdo->prepare("INSERT INTO client_audio_assignments (client_id, audio_id, assigned_by) VALUES (?,?,?)")
                 ->execute([$assignClientId, $assignAudioId, current_user_id()]);
         }
-        set_flash('success', 'Audio session assigned.');
+        set_flash('success', t('admin.audio.flash_assigned'));
         redirect('/admin/audio_sessions.php');
     }
 
     if (empty($title) && !$assignAction) {
-        $errors[] = 'Title is required.';
+        $errors[] = t('admin.audio.error_title_required');
     }
 
     if (empty($errors) && !$assignAction) {
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && verify_csrf_token(post('csrf_token'
             $pdo->prepare("INSERT INTO audio_sessions (title,category,description,duration_minutes,access_type,is_active) VALUES (?,?,?,?,?,?)")
                 ->execute([$title, $category, $description, $duration, $access, $isActive]);
         }
-        set_flash('success', 'Audio session saved.');
+        set_flash('success', t('admin.audio.flash_saved'));
         redirect('/admin/audio_sessions.php');
     }
 }
@@ -64,12 +64,12 @@ if ($editId) {
 $audioSessions = $pdo->query("SELECT * FROM audio_sessions ORDER BY id DESC")->fetchAll();
 $clients       = $pdo->query("SELECT id, full_name FROM users WHERE role = 'client' AND status = 'active' ORDER BY full_name")->fetchAll();
 
-$pageTitle = 'Audio Sessions — Admin — ' . APP_NAME;
+$pageTitle = t('admin.audio.page_title') . ' - ' . APP_NAME;
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="container">
-    <h1 class="page-title mt-4 mb-3">Audio Sessions</h1>
+    <h1 class="page-title mt-4 mb-3"><?= e(t('admin.audio.heading')) ?></h1>
 
     <?php if (!empty($errors)): ?>
         <div class="alert alert-danger">

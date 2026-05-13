@@ -34,46 +34,46 @@ $stmtMsgs = $pdo->prepare(
 $stmtMsgs->execute([$userId, $userId]);
 $messages = $stmtMsgs->fetchAll();
 
-$pageTitle = 'Messages — ' . APP_NAME;
+$pageTitle = t('client.messages.page_title') . ' - ' . APP_NAME;
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="container" style="max-width:760px">
-    <h1 class="page-title mt-4 mb-3">Messages</h1>
+    <h1 class="page-title mt-4 mb-3"><?= e(t('client.messages.heading')) ?></h1>
 
     <?php if ($success): ?>
-        <div class="alert alert-success"><i class="bi bi-check-circle me-2"></i>Message sent.</div>
+        <div class="alert alert-success"><i class="bi bi-check-circle me-2"></i><?= e(t('client.messages.sent')) ?></div>
     <?php endif; ?>
 
     <div class="card section-card p-4 mb-4">
-        <h5 class="fw-bold mb-3">Send a Message</h5>
+        <h5 class="fw-bold mb-3"><?= e(t('client.messages.send_title')) ?></h5>
         <form method="post" novalidate>
             <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
             <div class="mb-3">
-                <label class="form-label">To</label>
+                <label class="form-label"><?= e(t('client.messages.to')) ?></label>
                 <select name="receiver_id" class="form-select" required>
-                    <option value="">— Select recipient —</option>
+                    <option value=""><?= e(t('client.messages.select_recipient')) ?></option>
                     <?php foreach ($admins as $admin): ?>
                         <option value="<?= (int) $admin['id'] ?>"><?= e($admin['full_name']) ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
             <div class="mb-3">
-                <label class="form-label">Message</label>
+                <label class="form-label"><?= e(t('common.message')) ?></label>
                 <textarea name="message" class="form-control" rows="4" required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary rounded-pill"><i class="bi bi-send me-2"></i>Send</button>
+            <button type="submit" class="btn btn-primary rounded-pill"><i class="bi bi-send me-2"></i><?= e(t('common.send')) ?></button>
         </form>
     </div>
 
-    <h5 class="fw-bold mb-3">Conversation History</h5>
+    <h5 class="fw-bold mb-3"><?= e(t('client.messages.history')) ?></h5>
     <?php if (empty($messages)): ?>
-        <div class="alert alert-light">No messages yet.</div>
+        <div class="alert alert-light"><?= e(t('client.messages.empty')) ?></div>
     <?php else: ?>
         <?php foreach ($messages as $msg): ?>
             <div class="card section-card p-3 mb-2 <?= $msg['sender_id'] == $userId ? 'ms-4' : '' ?>">
                 <small class="text-muted">
-                    <strong><?= e($msg['sender_name'] ?? 'You') ?></strong>
+                    <strong><?= e($msg['sender_name'] ?? t('client.messages.you')) ?></strong>
                     &middot; <?= e(format_datetime($msg['created_at'])) ?>
                 </small>
                 <p class="mb-0 mt-1"><?= nl2br(e($msg['message'])) ?></p>

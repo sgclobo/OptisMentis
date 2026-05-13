@@ -21,16 +21,16 @@ $assigned = $stmtAssigned->fetchAll();
 $stmtFree = $pdo->query("SELECT * FROM audio_sessions WHERE access_type = 'free' AND is_active = 1");
 $free = $stmtFree->fetchAll();
 
-$pageTitle = 'Audio Library — ' . APP_NAME;
+$pageTitle = t('client.audio.page_title') . ' - ' . APP_NAME;
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="container">
-    <h1 class="page-title mt-4 mb-2">Audio Session Library</h1>
-    <p class="text-muted mb-4">Listen to your assigned sessions and free previews below.</p>
+    <h1 class="page-title mt-4 mb-2"><?= e(t('client.audio.heading')) ?></h1>
+    <p class="text-muted mb-4"><?= e(t('client.audio.intro')) ?></p>
 
     <?php if (!empty($assigned)): ?>
-        <h5 class="fw-bold mb-3">Your Assigned Sessions</h5>
+        <h5 class="fw-bold mb-3"><?= e(t('client.audio.assigned')) ?></h5>
         <div class="row g-4 mb-4">
             <?php foreach ($assigned as $audio): ?>
                 <div class="col-md-6 col-lg-4">
@@ -42,10 +42,10 @@ require_once __DIR__ . '/../includes/header.php';
                         <?php if ($audio['audio_file'] && $audio['audio_file'] !== 'placeholder.mp3'): ?>
                             <audio class="w-100 mt-3" controls>
                                 <source src="../assets/audio/<?= e($audio['audio_file']) ?>">
-                                Your browser does not support audio playback.
+                                <?= e(t('client.audio.no_browser_audio')) ?>
                             </audio>
                         <?php else: ?>
-                            <div class="alert alert-light mt-3 small mb-0">Audio file will be available soon.</div>
+                            <div class="alert alert-light mt-3 small mb-0"><?= e(t('client.audio.available_soon')) ?></div>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -53,9 +53,9 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
     <?php endif; ?>
 
-    <h5 class="fw-bold mb-3">Free Sessions</h5>
+    <h5 class="fw-bold mb-3"><?= e(t('client.audio.free_sessions')) ?></h5>
     <?php if (empty($free)): ?>
-        <div class="alert alert-info">No free sessions are currently available.</div>
+        <div class="alert alert-info"><?= e(t('client.audio.none_free')) ?></div>
     <?php else: ?>
         <div class="row g-4">
             <?php foreach ($free as $audio): ?>
@@ -70,7 +70,7 @@ require_once __DIR__ . '/../includes/header.php';
                                 <source src="../assets/audio/<?= e($audio['audio_file']) ?>">
                             </audio>
                         <?php else: ?>
-                            <div class="alert alert-light mt-3 small mb-0">Audio file — coming soon.</div>
+                            <div class="alert alert-light mt-3 small mb-0"><?= e(t('client.audio.coming_soon')) ?></div>
                         <?php endif; ?>
                     </div>
                 </div>

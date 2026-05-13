@@ -8,7 +8,7 @@ $success = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!verify_csrf_token(post('csrf_token'))) {
-        $errors[] = 'Invalid form token. Please try again.';
+        $errors[] = t('intake.error_invalid_form');
     } else {
         // Gather and validate required fields.
         $fullName           = post('full_name');
@@ -41,11 +41,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $consentGiven       = (int) (post('consent_given') === '1');
         $dataPrivacy        = (int) (post('data_privacy_agreement') === '1');
 
-        if (empty($fullName))                                               $errors[] = 'Full name is required.';
-        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL))   $errors[] = 'A valid email address is required.';
-        if (empty($mainConcern))                                            $errors[] = 'Please describe your main concern.';
-        if (!$consentGiven)                                                 $errors[] = 'You must provide consent to proceed.';
-        if (!$dataPrivacy)                                                  $errors[] = 'You must agree to the data privacy policy.';
+        if (empty($fullName))                                               $errors[] = t('intake.error_full_name');
+        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL))   $errors[] = t('intake.error_valid_email');
+        if (empty($mainConcern))                                            $errors[] = t('intake.error_main_concern');
+        if (!$consentGiven)                                                 $errors[] = t('intake.error_consent');
+        if (!$dataPrivacy)                                                  $errors[] = t('intake.error_privacy');
 
         if (empty($errors)) {
             $userId = current_user_id();
@@ -107,19 +107,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$pageTitle = 'Intake Form — ' . APP_NAME;
+$pageTitle = t('intake.page_title') . ' - ' . APP_NAME;
 require_once __DIR__ . '/includes/header.php';
 ?>
 
 <div class="container" style="max-width:820px">
-    <h1 class="page-title mt-4 mb-1">Client Intake Form</h1>
-    <p class="text-muted mb-3">Please complete all sections as fully as you can. All information is kept strictly confidential.</p>
+    <h1 class="page-title mt-4 mb-1"><?= e(t('intake.heading')) ?></h1>
+    <p class="text-muted mb-3"><?= e(t('intake.intro')) ?></p>
     <div class="wellness-banner mb-4 text-muted small">
         <i class="bi bi-info-circle me-1"></i><?= e(app_disclaimer()) ?>
     </div>
 
     <?php if ($success): ?>
-        <div class="alert alert-success"><i class="bi bi-check-circle me-2"></i>Your intake form has been submitted successfully. Our team will be in touch shortly.</div>
+        <div class="alert alert-success"><i class="bi bi-check-circle me-2"></i><?= e(t('intake.success')) ?></div>
     <?php endif; ?>
 
     <?php if (!empty($errors)): ?>
@@ -135,65 +135,65 @@ require_once __DIR__ . '/includes/header.php';
 
         <!-- ===== A. PERSONAL INFORMATION ===== -->
         <div class="card section-card p-4 mb-4">
-            <h5 class="fw-bold text-primary mb-3"><i class="bi bi-person me-2"></i>A. Personal Information</h5>
+            <h5 class="fw-bold text-primary mb-3"><i class="bi bi-person me-2"></i><?= e(t('intake.section_personal')) ?></h5>
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label class="form-label">Full Name <span class="text-danger">*</span></label>
+                    <label class="form-label"><?= e(t('intake.full_name')) ?> <span class="text-danger">*</span></label>
                     <input type="text" name="full_name" class="form-control" value="<?= e(post('full_name')) ?>" required>
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">Date of Birth</label>
+                    <label class="form-label"><?= e(t('intake.date_of_birth')) ?></label>
                     <input type="date" name="date_of_birth" class="form-control" value="<?= e(post('date_of_birth')) ?>">
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">Gender</label>
+                    <label class="form-label"><?= e(t('intake.gender')) ?></label>
                     <select name="gender" class="form-select">
-                        <option value="">— Select —</option>
-                        <option value="female" <?= post('gender') === 'female' ? 'selected' : '' ?>>Female</option>
-                        <option value="male" <?= post('gender') === 'male' ? 'selected' : '' ?>>Male</option>
-                        <option value="non_binary" <?= post('gender') === 'non_binary' ? 'selected' : '' ?>>Non-Binary</option>
-                        <option value="prefer_not_to_say" <?= post('gender') === 'prefer_not_to_say' ? 'selected' : '' ?>>Prefer not to say</option>
+                        <option value=""><?= e(t('common.select')) ?></option>
+                        <option value="female" <?= post('gender') === 'female' ? 'selected' : '' ?>><?= e(t('intake.gender_female')) ?></option>
+                        <option value="male" <?= post('gender') === 'male' ? 'selected' : '' ?>><?= e(t('intake.gender_male')) ?></option>
+                        <option value="non_binary" <?= post('gender') === 'non_binary' ? 'selected' : '' ?>><?= e(t('intake.gender_non_binary')) ?></option>
+                        <option value="prefer_not_to_say" <?= post('gender') === 'prefer_not_to_say' ? 'selected' : '' ?>><?= e(t('intake.gender_prefer_not')) ?></option>
                     </select>
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">Marital Status</label>
+                    <label class="form-label"><?= e(t('intake.marital_status')) ?></label>
                     <select name="marital_status" class="form-select">
-                        <option value="">— Select —</option>
+                        <option value=""><?= e(t('common.select')) ?></option>
                         <?php foreach (['Single', 'Married', 'Partnered', 'Divorced', 'Widowed', 'Separated', 'Prefer not to say'] as $ms): ?>
                             <option value="<?= e(strtolower(str_replace(' ', '_', $ms))) ?>" <?= post('marital_status') === strtolower(str_replace(' ', '_', $ms)) ? 'selected' : '' ?>><?= e($ms) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Number of Children</label>
+                    <label class="form-label"><?= e(t('intake.children')) ?></label>
                     <input type="number" name="number_of_children" class="form-control" min="0" value="<?= e(post('number_of_children')) ?>">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Email <span class="text-danger">*</span></label>
+                    <label class="form-label"><?= e(t('intake.email')) ?> <span class="text-danger">*</span></label>
                     <input type="email" name="email" class="form-control" value="<?= e(post('email')) ?>" required>
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Phone</label>
+                    <label class="form-label"><?= e(t('intake.phone')) ?></label>
                     <input type="tel" name="phone" class="form-control" value="<?= e(post('phone')) ?>">
                 </div>
                 <div class="col-md-8">
-                    <label class="form-label">Address</label>
+                    <label class="form-label"><?= e(t('intake.address')) ?></label>
                     <input type="text" name="address" class="form-control" value="<?= e(post('address')) ?>">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Country</label>
+                    <label class="form-label"><?= e(t('intake.country')) ?></label>
                     <input type="text" name="country" class="form-control" value="<?= e(post('country')) ?>">
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">Occupation</label>
+                    <label class="form-label"><?= e(t('intake.occupation')) ?></label>
                     <input type="text" name="occupation" class="form-control" value="<?= e(post('occupation')) ?>">
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Emergency Contact Name</label>
+                    <label class="form-label"><?= e(t('intake.emergency_contact_name')) ?></label>
                     <input type="text" name="emergency_contact_name" class="form-control" value="<?= e(post('emergency_contact_name')) ?>">
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Emergency Contact Phone</label>
+                    <label class="form-label"><?= e(t('intake.emergency_contact_phone')) ?></label>
                     <input type="tel" name="emergency_contact_phone" class="form-control" value="<?= e(post('emergency_contact_phone')) ?>">
                 </div>
             </div>
@@ -201,55 +201,55 @@ require_once __DIR__ . '/includes/header.php';
 
         <!-- ===== B. MAIN CONCERN ===== -->
         <div class="card section-card p-4 mb-4">
-            <h5 class="fw-bold text-primary mb-3"><i class="bi bi-chat-square-text me-2"></i>B. Main Concern</h5>
+            <h5 class="fw-bold text-primary mb-3"><i class="bi bi-chat-square-text me-2"></i><?= e(t('intake.section_concern')) ?></h5>
             <div class="mb-3">
-                <label class="form-label">What is your primary reason for seeking hypnotherapy? <span class="text-danger">*</span></label>
-                <input type="text" name="main_concern" class="form-control" value="<?= e(post('main_concern')) ?>" placeholder="e.g. Anxiety, Sleep difficulties, Smoking cessation" required>
+                <label class="form-label"><?= e(t('intake.main_concern')) ?> <span class="text-danger">*</span></label>
+                <input type="text" name="main_concern" class="form-control" value="<?= e(post('main_concern')) ?>" placeholder="<?= e(t('intake.main_concern_placeholder')) ?>" required>
             </div>
             <div class="mb-3">
-                <label class="form-label">Please describe your concern in more detail</label>
+                <label class="form-label"><?= e(t('intake.concern_description')) ?></label>
                 <textarea name="concern_description" class="form-control" rows="4"><?= e(post('concern_description')) ?></textarea>
             </div>
             <div>
-                <label class="form-label">Therapy Goals — what would success look like for you?</label>
+                <label class="form-label"><?= e(t('intake.therapy_goals')) ?></label>
                 <textarea name="therapy_goals" class="form-control" rows="3"><?= e(post('therapy_goals')) ?></textarea>
             </div>
         </div>
 
         <!-- ===== C. LIFESTYLE ===== -->
         <div class="card section-card p-4 mb-4">
-            <h5 class="fw-bold text-primary mb-3"><i class="bi bi-heart me-2"></i>C. Lifestyle and Habits</h5>
-            <p class="text-muted small mb-3">Rate the following on a scale from 1 (poor/high) to 10 (excellent/low):</p>
+            <h5 class="fw-bold text-primary mb-3"><i class="bi bi-heart me-2"></i><?= e(t('intake.section_lifestyle')) ?></h5>
+            <p class="text-muted small mb-3"><?= e(t('intake.scale_intro')) ?></p>
             <div class="row g-3">
                 <div class="col-md-4">
-                    <label class="form-label">Sleep Quality (1–10)</label>
+                    <label class="form-label"><?= e(t('intake.sleep_quality')) ?></label>
                     <input type="number" name="sleep_quality" class="form-control" min="1" max="10" value="<?= e(post('sleep_quality')) ?>">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Stress Level (1–10)</label>
+                    <label class="form-label"><?= e(t('intake.stress_level')) ?></label>
                     <input type="number" name="stress_level" class="form-control" min="1" max="10" value="<?= e(post('stress_level')) ?>">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Anxiety Level (1–10)</label>
+                    <label class="form-label"><?= e(t('intake.anxiety_level')) ?></label>
                     <input type="number" name="anxiety_level" class="form-control" min="1" max="10" value="<?= e(post('anxiety_level')) ?>">
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">Smoking Status</label>
+                    <label class="form-label"><?= e(t('intake.smoking_status')) ?></label>
                     <select name="smoking_status" class="form-select">
-                        <option value="">— Select —</option>
-                        <option value="non_smoker" <?= post('smoking_status') === 'non_smoker' ? 'selected' : '' ?>>Non-smoker</option>
-                        <option value="smoker" <?= post('smoking_status') === 'smoker' ? 'selected' : '' ?>>Current smoker</option>
-                        <option value="ex_smoker" <?= post('smoking_status') === 'ex_smoker' ? 'selected' : '' ?>>Ex-smoker</option>
+                        <option value=""><?= e(t('common.select')) ?></option>
+                        <option value="non_smoker" <?= post('smoking_status') === 'non_smoker' ? 'selected' : '' ?>><?= e(t('intake.non_smoker')) ?></option>
+                        <option value="smoker" <?= post('smoking_status') === 'smoker' ? 'selected' : '' ?>><?= e(t('intake.current_smoker')) ?></option>
+                        <option value="ex_smoker" <?= post('smoking_status') === 'ex_smoker' ? 'selected' : '' ?>><?= e(t('intake.ex_smoker')) ?></option>
                     </select>
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">Alcohol Use</label>
+                    <label class="form-label"><?= e(t('intake.alcohol_use')) ?></label>
                     <select name="alcohol_use" class="form-select">
-                        <option value="">— Select —</option>
-                        <option value="none" <?= post('alcohol_use') === 'none' ? 'selected' : '' ?>>None</option>
-                        <option value="occasional" <?= post('alcohol_use') === 'occasional' ? 'selected' : '' ?>>Occasional</option>
-                        <option value="moderate" <?= post('alcohol_use') === 'moderate' ? 'selected' : '' ?>>Moderate</option>
-                        <option value="heavy" <?= post('alcohol_use') === 'heavy' ? 'selected' : '' ?>>Heavy</option>
+                        <option value=""><?= e(t('common.select')) ?></option>
+                        <option value="none" <?= post('alcohol_use') === 'none' ? 'selected' : '' ?>><?= e(t('common.none')) ?></option>
+                        <option value="occasional" <?= post('alcohol_use') === 'occasional' ? 'selected' : '' ?>><?= e(t('intake.occasional')) ?></option>
+                        <option value="moderate" <?= post('alcohol_use') === 'moderate' ? 'selected' : '' ?>><?= e(t('intake.moderate')) ?></option>
+                        <option value="heavy" <?= post('alcohol_use') === 'heavy' ? 'selected' : '' ?>><?= e(t('intake.heavy')) ?></option>
                     </select>
                 </div>
             </div>
@@ -257,17 +257,17 @@ require_once __DIR__ . '/includes/header.php';
 
         <!-- ===== D. MEDICAL HISTORY ===== -->
         <div class="card section-card p-4 mb-4">
-            <h5 class="fw-bold text-primary mb-3"><i class="bi bi-clipboard2-pulse me-2"></i>D. Medical and Psychological History</h5>
+            <h5 class="fw-bold text-primary mb-3"><i class="bi bi-clipboard2-pulse me-2"></i><?= e(t('intake.section_medical')) ?></h5>
             <div class="mb-3">
-                <label class="form-label">Current Medications (name and dosage if known)</label>
+                <label class="form-label"><?= e(t('intake.current_medications')) ?></label>
                 <textarea name="current_medications" class="form-control" rows="2"><?= e(post('current_medications')) ?></textarea>
             </div>
             <div class="mb-3">
-                <label class="form-label">Medical Conditions</label>
+                <label class="form-label"><?= e(t('intake.medical_conditions')) ?></label>
                 <textarea name="medical_conditions" class="form-control" rows="2"><?= e(post('medical_conditions')) ?></textarea>
             </div>
             <div class="mb-3">
-                <label class="form-label">Psychological / Mental Health History</label>
+                <label class="form-label"><?= e(t('intake.psych_history')) ?></label>
                 <textarea name="psychological_history" class="form-control" rows="2"><?= e(post('psychological_history')) ?></textarea>
             </div>
 
@@ -275,35 +275,35 @@ require_once __DIR__ . '/includes/header.php';
             <div class="row g-3">
                 <?php
                 $safetyQs = [
-                    ['name' => 'history_of_psychosis',         'label' => 'Do you have a history of psychosis or psychotic episodes?'],
-                    ['name' => 'history_of_epilepsy',          'label' => 'Do you have a history of epilepsy or seizures?'],
-                    ['name' => 'current_psychiatric_treatment', 'label' => 'Are you currently receiving psychiatric treatment?'],
+                    ['name' => 'history_of_psychosis',         'label' => t('intake.safety_psychosis')],
+                    ['name' => 'history_of_epilepsy',          'label' => t('intake.safety_epilepsy')],
+                    ['name' => 'current_psychiatric_treatment', 'label' => t('intake.safety_psychiatric_treatment')],
                 ];
                 foreach ($safetyQs as $sq):
                 ?>
                     <div class="col-md-6">
                         <label class="form-label fw-semibold"><?= e($sq['label']) ?></label>
                         <select name="<?= e($sq['name']) ?>" class="form-select">
-                            <option value="no" <?= post($sq['name']) !== 'yes' ? 'selected' : '' ?>>No</option>
-                            <option value="yes" <?= post($sq['name']) === 'yes' ? 'selected' : '' ?>>Yes</option>
+                            <option value="no" <?= post($sq['name']) !== 'yes' ? 'selected' : '' ?>><?= e(t('common.no')) ?></option>
+                            <option value="yes" <?= post($sq['name']) === 'yes' ? 'selected' : '' ?>><?= e(t('common.yes')) ?></option>
                         </select>
                     </div>
                 <?php endforeach; ?>
 
                 <!-- Suicidal thoughts — has warning banner -->
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold text-danger">Are you currently experiencing thoughts of self-harm or suicide?</label>
+                    <label class="form-label fw-semibold text-danger"><?= e(t('intake.safety_suicidal')) ?></label>
                     <select name="suicidal_thoughts" class="form-select border-danger">
-                        <option value="no" <?= post('suicidal_thoughts') !== 'yes' ? 'selected' : '' ?>>No</option>
-                        <option value="yes" <?= post('suicidal_thoughts') === 'yes' ? 'selected' : '' ?>>Yes</option>
+                        <option value="no" <?= post('suicidal_thoughts') !== 'yes' ? 'selected' : '' ?>><?= e(t('common.no')) ?></option>
+                        <option value="yes" <?= post('suicidal_thoughts') === 'yes' ? 'selected' : '' ?>><?= e(t('common.yes')) ?></option>
                     </select>
                 </div>
             </div>
 
             <!-- Safety warning displayed by JS -->
             <div id="safetyWarning" class="warning-banner mt-3 d-none">
-                <strong><i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>Important Safety Notice:</strong>
-                <p class="mb-0 mt-1">This service is not suitable for emergencies. If you are experiencing a mental health crisis or thoughts of self-harm, please contact emergency services (999 / 112 / 911) or a qualified mental health professional immediately.</p>
+                <strong><i class="bi bi-exclamation-triangle-fill text-warning me-2"></i><?= e(t('intake.safety_notice_title')) ?></strong>
+                <p class="mb-0 mt-1"><?= e(t('intake.safety_notice_text')) ?></p>
             </div>
         </div>
 
@@ -311,33 +311,33 @@ require_once __DIR__ . '/includes/header.php';
 
         <!-- ===== F. CONSENT ===== -->
         <div class="card section-card p-4 mb-4">
-            <h5 class="fw-bold text-primary mb-3"><i class="bi bi-file-earmark-check me-2"></i>F. Consent and Privacy Agreement</h5>
+            <h5 class="fw-bold text-primary mb-3"><i class="bi bi-file-earmark-check me-2"></i><?= e(t('intake.section_consent')) ?></h5>
             <div class="wellness-banner mb-3 text-muted small">
                 <i class="bi bi-info-circle me-1"></i><?= e(app_disclaimer()) ?>
             </div>
-            <p class="text-muted small">By submitting this form you understand that:</p>
+            <p class="text-muted small"><?= e(t('intake.consent_intro')) ?></p>
             <ul class="text-muted small">
-                <li>Hypnotherapy is a complementary, non-medical service.</li>
-                <li>You remain fully in control throughout every session.</li>
-                <li>No diagnoses, cures, or medical guarantees are provided.</li>
-                <li>Your information is handled confidentially per our data privacy policy.</li>
+                <li><?= e(t('intake.consent_item_1')) ?></li>
+                <li><?= e(t('intake.consent_item_2')) ?></li>
+                <li><?= e(t('intake.consent_item_3')) ?></li>
+                <li><?= e(t('intake.consent_item_4')) ?></li>
             </ul>
             <div class="form-check mb-2">
                 <input class="form-check-input" type="checkbox" name="consent_given" value="1" id="consentCheck" <?= post('consent_given') === '1' ? 'checked' : '' ?> required>
                 <label class="form-check-label" for="consentCheck">
-                    I understand and consent to receiving hypnotherapy services. <span class="text-danger">*</span>
+                    <?= e(t('intake.consent_check_1')) ?> <span class="text-danger">*</span>
                 </label>
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" name="data_privacy_agreement" value="1" id="privacyCheck" <?= post('data_privacy_agreement') === '1' ? 'checked' : '' ?> required>
                 <label class="form-check-label" for="privacyCheck">
-                    I agree to the collection and processing of my personal data as outlined in the privacy policy. <span class="text-danger">*</span>
+                    <?= e(t('intake.consent_check_2')) ?> <span class="text-danger">*</span>
                 </label>
             </div>
         </div>
 
         <button type="submit" class="btn btn-primary w-100 btn-lg rounded-pill mb-5">
-            <i class="bi bi-send me-2"></i>Submit Intake Form
+            <i class="bi bi-send me-2"></i><?= e(t('intake.submit')) ?>
         </button>
     </form>
 </div>

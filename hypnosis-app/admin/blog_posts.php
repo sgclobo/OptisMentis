@@ -15,8 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && verify_csrf_token(post('csrf_token'
     $content = $_POST['content'] ?? '';
     $status  = post('status');
 
-    if (empty($title)) $errors[] = 'Title is required.';
-    if (empty($content)) $errors[] = 'Content is required.';
+    if (empty($title)) $errors[] = t('admin.blog.error_title_required');
+    if (empty($content)) $errors[] = t('admin.blog.error_content_required');
     if (!in_array($status, ['draft', 'published'], true)) $status = 'draft';
 
     if (empty($errors)) {
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && verify_csrf_token(post('csrf_token'
             $pdo->prepare("INSERT INTO blog_posts (title,slug,content,status,author_id) VALUES (?,?,?,?,?)")
                 ->execute([$title, $slug, $content, $status, $authorId]);
         }
-        set_flash('success', 'Blog post saved.');
+        set_flash('success', t('admin.blog.flash_saved'));
         redirect('/admin/blog_posts.php');
     }
 }
@@ -42,12 +42,12 @@ if ($editId) {
 
 $posts = $pdo->query("SELECT bp.*, u.full_name AS author_name FROM blog_posts bp LEFT JOIN users u ON u.id = bp.author_id ORDER BY bp.created_at DESC")->fetchAll();
 
-$pageTitle = 'Blog Posts — Admin — ' . APP_NAME;
+$pageTitle = t('admin.blog.page_title') . ' - ' . APP_NAME;
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="container">
-    <h1 class="page-title mt-4 mb-3">Blog Posts</h1>
+    <h1 class="page-title mt-4 mb-3"><?= e(t('admin.blog.heading')) ?></h1>
 
     <?php if (!empty($errors)): ?>
         <div class="alert alert-danger">
