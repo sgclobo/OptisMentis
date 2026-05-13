@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/app.php';
+require_once __DIR__ . '/../includes/functions.php';
 
 /**
  * Read env vars robustly across SAPIs where getenv can be disabled/unreliable.
