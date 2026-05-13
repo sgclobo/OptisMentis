@@ -45,16 +45,24 @@ $localConfigCandidates = [
 $loadedLocalConfigFile = null;
 foreach ($localConfigCandidates as $candidate) {
     if (is_file($candidate)) {
-        $localConfig = require $candidate;
-        if (is_array($localConfig)) {
-            $config = array_merge($config, $localConfig);
-            $loadedLocalConfigFile = basename($candidate);
-            break;
+        try {
+            $localConfig = require $candidate;
+            if (is_array($localConfig)) {
+                $config = array_merge($config, $localConfig);
+                $loadedLocalConfigFile = basename($candidate);
+                break;
+            }
+
+            error_log('Database config file ignored (not an array): ' . basename($candidate));
+        } catch (Throwable $exception) {
+            error_log('Database config file failed to load (' . basename($candidate) . '): ' . $exception->getMessage());
         }
     }
 }
 
 $configSource = $loadedLocalConfigFile !== null ? 'local-file:' . $loadedLocalConfigFile : 'environment/defaults';
+$config['port'] = is_numeric($config['port']) ? (int) $config['port'] : 3306;
+$config['charset'] = (string) ($config['charset'] ?: 'utf8mb4');
 
 $dsn = sprintf(
     'mysql:host=%s;port=%d;dbname=%s;charset=%s',
@@ -79,4 +87,8 @@ try {
     error_log('Database connection failed (' . $configSource . '): ' . $exception->getMessage());
     http_response_code(500);
     exit('Database connection failed. Check config/db.local.php or the DB_* environment variables.');
+} catch (Throwable $exception) {
+    error_log('Unexpected database bootstrap error (' . $configSource . '): ' . $exception->getMessage());
+    http_response_code(500);
+    exit('Unexpected database bootstrap error. Check PHP error logs.');
 }
