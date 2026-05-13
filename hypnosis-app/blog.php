@@ -4,14 +4,21 @@ declare(strict_types=1);
 require_once __DIR__ . '/config/db.php';
 
 $pageTitle = t('blog.page_title') . ' - ' . APP_NAME;
-$stmt = $pdo->query("SELECT bp.*, u.full_name AS author_name FROM blog_posts bp LEFT JOIN users u ON u.id = bp.author_id WHERE bp.status = 'published' ORDER BY bp.created_at DESC");
-$posts = $stmt->fetchAll();
+$posts = [];
+
+if (is_object($pdo) && method_exists($pdo, 'query')) {
+    $stmt = $pdo->query("SELECT bp.*, u.full_name AS author_name FROM blog_posts bp LEFT JOIN users u ON u.id = bp.author_id WHERE bp.status = 'published' ORDER BY bp.created_at DESC");
+    $posts = $stmt->fetchAll();
+}
 require_once __DIR__ . '/includes/header.php';
 ?>
 
 <div class="container">
     <h1 class="page-title mt-4 mb-2"><?= e(t('blog.heading')) ?></h1>
     <p class="text-muted mb-4"><?= e(t('blog.intro')) ?></p>
+    <?php if (!empty($dbConnectionError)): ?>
+        <div class="alert alert-warning"><?= e('Blog content is temporarily unavailable while database access is being restored.') ?></div>
+    <?php endif; ?>
 
     <?php if (empty($posts)): ?>
         <div class="alert alert-info"><?= e(t('blog.empty')) ?></div>

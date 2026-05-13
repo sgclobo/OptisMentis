@@ -5,11 +5,16 @@ declare(strict_types=1);
 require_once __DIR__ . '/config/db.php';
 
 // Fetch active services and free audio previews for the landing page.
-$stmtServices = $pdo->query("SELECT * FROM services WHERE is_active = 1 LIMIT 8");
-$services = $stmtServices->fetchAll();
+$services = [];
+$freeSessions = [];
 
-$stmtAudio = $pdo->query("SELECT * FROM audio_sessions WHERE is_active = 1 AND access_type = 'free' LIMIT 4");
-$freeSessions = $stmtAudio->fetchAll();
+if (is_object($pdo) && method_exists($pdo, 'query')) {
+    $stmtServices = $pdo->query("SELECT * FROM services WHERE is_active = 1 LIMIT 8");
+    $services = $stmtServices->fetchAll();
+
+    $stmtAudio = $pdo->query("SELECT * FROM audio_sessions WHERE is_active = 1 AND access_type = 'free' LIMIT 4");
+    $freeSessions = $stmtAudio->fetchAll();
+}
 
 $pageTitle = t('home.page_title', ['app' => APP_NAME]);
 require_once __DIR__ . '/includes/header.php';
@@ -83,6 +88,9 @@ require_once __DIR__ . '/includes/header.php';
     <div class="container">
         <h2 class="page-title text-center mb-2"><?= e(t('home.services_heading')) ?></h2>
         <p class="text-center text-muted mb-4"><?= e(t('home.services_intro')) ?></p>
+        <?php if (!empty($dbConnectionError)): ?>
+            <div class="alert alert-warning"><?= e('Some dynamic sections are temporarily unavailable while database access is being restored.') ?></div>
+        <?php endif; ?>
         <?php if ($services): ?>
             <div class="row g-4">
                 <?php foreach ($services as $service): ?>

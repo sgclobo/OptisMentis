@@ -63,6 +63,7 @@ foreach ($localConfigCandidates as $candidate) {
 $configSource = $loadedLocalConfigFile !== null ? 'local-file:' . $loadedLocalConfigFile : 'environment/defaults';
 $config['port'] = is_numeric($config['port']) ? (int) $config['port'] : 3306;
 $config['charset'] = (string) ($config['charset'] ?: 'utf8mb4');
+$dbConnectionError = null;
 
 $dsn = sprintf(
     'mysql:host=%s;port=%d;dbname=%s;charset=%s',
@@ -85,10 +86,10 @@ try {
     );
 } catch (PDOException $exception) {
     error_log('Database connection failed (' . $configSource . '): ' . $exception->getMessage());
-    http_response_code(500);
-    exit('Database connection failed. Check config/db.local.php or the DB_* environment variables.');
+    $dbConnectionError = 'db-connection-failed';
+    $pdo = null;
 } catch (Throwable $exception) {
     error_log('Unexpected database bootstrap error (' . $configSource . '): ' . $exception->getMessage());
-    http_response_code(500);
-    exit('Unexpected database bootstrap error. Check PHP error logs.');
+    $dbConnectionError = 'db-bootstrap-failed';
+    $pdo = null;
 }

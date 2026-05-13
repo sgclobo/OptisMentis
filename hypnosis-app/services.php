@@ -3,8 +3,12 @@
 declare(strict_types=1);
 require_once __DIR__ . '/config/db.php';
 
-$stmt = $pdo->query("SELECT * FROM services WHERE is_active = 1 ORDER BY id");
-$services = $stmt->fetchAll();
+$services = [];
+
+if (is_object($pdo) && method_exists($pdo, 'query')) {
+    $stmt = $pdo->query("SELECT * FROM services WHERE is_active = 1 ORDER BY id");
+    $services = $stmt->fetchAll();
+}
 
 $pageTitle = t('services.page_title') . ' - ' . APP_NAME;
 require_once __DIR__ . '/includes/header.php';
@@ -13,6 +17,9 @@ require_once __DIR__ . '/includes/header.php';
 <div class="container">
     <h1 class="page-title mt-4 mb-2"><?= e(t('services.heading')) ?></h1>
     <p class="text-muted mb-4"><?= e(t('services.intro')) ?></p>
+    <?php if (!empty($dbConnectionError)): ?>
+        <div class="alert alert-warning"><?= e('Service listings are temporarily unavailable while database access is being restored.') ?></div>
+    <?php endif; ?>
     <div class="wellness-banner mb-4 text-muted small">
         <i class="bi bi-info-circle me-1"></i><?= e(app_disclaimer()) ?>
     </div>
