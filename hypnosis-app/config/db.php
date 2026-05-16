@@ -31,8 +31,8 @@ if (!function_exists('db_env')) {
 $config = [
     'host' => db_env('DB_HOST') ?: '127.0.0.1',
     'port' => (int) (db_env('DB_PORT') ?: 3306),
-    'name' => db_env('DB_NAME') ?: 'hypnosis_app',
-    'user' => db_env('DB_USER') ?: 'root',
+    'name' => db_env('DB_NAME') ?: 'u781534777_optismentis',
+    'user' => db_env('DB_USER') ?: 'u781534777_optismentisusr',
     'pass' => db_env('DB_PASS') ?: '',
     'charset' => db_env('DB_CHARSET') ?: 'utf8mb4',
 ];
