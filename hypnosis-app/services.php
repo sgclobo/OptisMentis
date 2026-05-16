@@ -4,6 +4,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/config/db.php';
 
 $services = [];
+$startingServiceFee = 25.00;
 $serviceTranslationMap = [
     'stress-anxiety-support' => 'services.catalog.stress_anxiety',
     'smoking-cessation' => 'services.catalog.smoking_cessation',
@@ -52,9 +53,7 @@ require_once __DIR__ . '/includes/header.php';
                     <h5 class="fw-bold"><?= e($serviceTitle) ?></h5>
                     <p class="text-muted"><?= e($serviceDescription) ?></p>
                     <div class="mt-auto d-flex flex-wrap gap-2 text-secondary small align-items-center">
-                        <?php if ($service['price']): ?>
-                            <span class="badge bg-light text-dark border"><?= e(t('services.price_from')) ?> $<?= number_format((float) $service['price'], 2) ?></span>
-                        <?php endif; ?>
+                        <span class="badge bg-light text-dark border"><?= e(t('services.price_from')) ?> $<?= number_format($startingServiceFee, 2) ?></span>
                         <?php if ($service['duration_minutes']): ?>
                             <span><i class="bi bi-clock me-1"></i><?= (int) $service['duration_minutes'] ?> <?= e(t('services.duration_minutes_suffix')) ?></span>
                         <?php endif; ?>
