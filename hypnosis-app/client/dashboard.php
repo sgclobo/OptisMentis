@@ -5,32 +5,42 @@ $requiredRoles = ['client'];
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth_check.php';
 
-$userId = current_user_id();
+$userId        = current_user_id();
+$nextAppt      = null;
+$assignedAudio = [];
+$progressLogs  = [];
+$unreadCount   = 0;
 
-// Upcoming appointment
-$stmtAppt = $pdo->prepare("SELECT * FROM appointments WHERE user_id = ? AND status IN ('requested','confirmed') ORDER BY preferred_date ASC LIMIT 1");
-$stmtAppt->execute([$userId]);
-$nextAppt = $stmtAppt->fetch();
+if ($pdo !== null) {
+    try {
+        // Upcoming appointment
+        $stmtAppt = $pdo->prepare("SELECT * FROM appointments WHERE user_id = ? AND status IN ('requested','confirmed') ORDER BY preferred_date ASC LIMIT 1");
+        $stmtAppt->execute([$userId]);
+        $nextAppt = $stmtAppt->fetch();
 
-// Assigned audio sessions
-$stmtAudio = $pdo->prepare(
-    "SELECT a.* FROM audio_sessions a
-     INNER JOIN client_audio_assignments ca ON ca.audio_id = a.id
-     WHERE ca.client_id = ? AND a.is_active = 1
-     ORDER BY ca.assigned_at DESC LIMIT 4"
-);
-$stmtAudio->execute([$userId]);
-$assignedAudio = $stmtAudio->fetchAll();
+        // Assigned audio sessions
+        $stmtAudio = $pdo->prepare(
+            "SELECT a.* FROM audio_sessions a
+             INNER JOIN client_audio_assignments ca ON ca.audio_id = a.id
+             WHERE ca.client_id = ? AND a.is_active = 1
+             ORDER BY ca.assigned_at DESC LIMIT 4"
+        );
+        $stmtAudio->execute([$userId]);
+        $assignedAudio = $stmtAudio->fetchAll();
 
-// Latest progress logs
-$stmtProg = $pdo->prepare("SELECT * FROM progress_logs WHERE client_id = ? ORDER BY created_at DESC LIMIT 5");
-$stmtProg->execute([$userId]);
-$progressLogs = $stmtProg->fetchAll();
+        // Latest progress logs
+        $stmtProg = $pdo->prepare("SELECT * FROM progress_logs WHERE client_id = ? ORDER BY created_at DESC LIMIT 5");
+        $stmtProg->execute([$userId]);
+        $progressLogs = $stmtProg->fetchAll();
 
-// Unread messages count
-$stmtMsgs = $pdo->prepare("SELECT COUNT(*) FROM messages WHERE receiver_id = ? AND is_read = 0");
-$stmtMsgs->execute([$userId]);
-$unreadCount = (int) $stmtMsgs->fetchColumn();
+        // Unread messages count
+        $stmtMsgs = $pdo->prepare("SELECT COUNT(*) FROM messages WHERE receiver_id = ? AND is_read = 0");
+        $stmtMsgs->execute([$userId]);
+        $unreadCount = (int) $stmtMsgs->fetchColumn();
+    } catch (Throwable $e) {
+        error_log('Client dashboard query error: ' . $e->getMessage());
+    }
+}
 
 $pageTitle = t('client.dashboard.page_title') . ' - ' . APP_NAME;
 require_once __DIR__ . '/../includes/header.php';

@@ -6,13 +6,25 @@ require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../includes/auth_check.php';
 
 // Summary stats
-$totalClients    = (int) $pdo->query("SELECT COUNT(*) FROM users WHERE role = 'client'")->fetchColumn();
-$newIntakes      = (int) $pdo->query("SELECT COUNT(*) FROM intake_forms WHERE status = 'new'")->fetchColumn();
-$pendingAppts    = (int) $pdo->query("SELECT COUNT(*) FROM appointments WHERE status = 'requested'")->fetchColumn();
-$unreadMessages  = (int) $pdo->query("SELECT COUNT(*) FROM messages WHERE is_read = 0")->fetchColumn();
+$totalClients   = 0;
+$newIntakes     = 0;
+$pendingAppts   = 0;
+$unreadMessages = 0;
+$recentIntakes  = [];
+$upcomingAppts  = [];
 
-$recentIntakes   = $pdo->query("SELECT * FROM intake_forms ORDER BY created_at DESC LIMIT 5")->fetchAll();
-$upcomingAppts   = $pdo->query("SELECT a.*, u.full_name AS client_name FROM appointments a LEFT JOIN users u ON u.id = a.user_id WHERE a.status IN ('requested','confirmed') ORDER BY a.preferred_date ASC LIMIT 5")->fetchAll();
+if ($pdo !== null) {
+    try {
+        $totalClients   = (int) $pdo->query("SELECT COUNT(*) FROM users WHERE role = 'client'")->fetchColumn();
+        $newIntakes     = (int) $pdo->query("SELECT COUNT(*) FROM intake_forms WHERE status = 'new'")->fetchColumn();
+        $pendingAppts   = (int) $pdo->query("SELECT COUNT(*) FROM appointments WHERE status = 'requested'")->fetchColumn();
+        $unreadMessages = (int) $pdo->query("SELECT COUNT(*) FROM messages WHERE is_read = 0")->fetchColumn();
+        $recentIntakes  = $pdo->query("SELECT * FROM intake_forms ORDER BY created_at DESC LIMIT 5")->fetchAll();
+        $upcomingAppts  = $pdo->query("SELECT a.*, u.full_name AS client_name FROM appointments a LEFT JOIN users u ON u.id = a.user_id WHERE a.status IN ('requested','confirmed') ORDER BY a.preferred_date ASC LIMIT 5")->fetchAll();
+    } catch (Throwable $e) {
+        error_log('Admin dashboard query error: ' . $e->getMessage());
+    }
+}
 
 $pageTitle = t('admin.dashboard.page_title') . ' - ' . APP_NAME;
 require_once __DIR__ . '/../includes/header.php';

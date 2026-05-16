@@ -12,6 +12,8 @@ $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!verify_csrf_token(post('csrf_token'))) {
         $errors[] = t('register.error_invalid_form');
+    } elseif ($pdo === null) {
+        $errors[] = 'Service temporarily unavailable. Please try again later.';
     } else {
         $fullName = post('full_name');
         $email    = post('email');
